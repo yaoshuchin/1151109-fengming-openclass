@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>循跡達人：Matrix 機器人十線循跡感測器程式設計實戰 - 公開授課簡報</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+    
+    body {
+      font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+    }
+    .code-font {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .slide-enter {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .dark .glass-card {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(51, 65, 85, 0.8);
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-blue-600 selection:text-white">
+
+  <!-- 頂部功能列 -->
+  <header class="bg-slate-950/80 backdrop-blur border-b border-slate-800 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
+    <div class="flex items-center space-x-3">
+      <span class="px-2.5 py-1 bg-blue-600/30 text-blue-400 border border-blue-500/40 rounded-full text-xs font-semibold tracking-wide">
+        115學年度公開授課
+      </span>
+      <h1 class="text-sm md:text-base font-bold text-slate-200 truncate">
+        南投縣立鳳鳴國中 科技領域 / 資訊科技公開授課教案簡報
+      </h1>
+    </div>
+
+    <!-- 簡報控制區 -->
+    <div class="flex items-center space-x-2 md:space-x-4">
+      <div class="text-xs text-slate-400">
+        <span id="currentSlideNum" class="font-bold text-blue-400 text-sm">1</span> / <span id="totalSlidesNum">10</span>
+      </div>
+      <div class="flex items-center bg-slate-800/80 rounded-lg p-1 border border-slate-700">
+        <button onclick="prevSlide()" title="上一頁 (←)" class="p-1.5 hover:bg-slate-700 rounded text-slate-300 hover:text-white transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button onclick="nextSlide()" title="下一頁 (Space / →)" class="p-1.5 hover:bg-slate-700 rounded text-slate-300 hover:text-white transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <button onclick="toggleOverview()" title="投影片總覽" class="hidden sm:flex items-center space-x-1 px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs font-medium text-slate-300 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        <span>目錄</span>
+      </button>
+      <a href="觀議課統整分析儀表板.html" class="flex items-center space-x-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-medium shadow-sm transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <span>切換觀議課儀表板</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- 進度條 -->
+  <div class="w-full bg-slate-800 h-1">
+    <div id="progressBar" class="bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 h-1 transition-all duration-300" style="width: 10%;"></div>
+  </div>
+
+  <!-- 投影片主要內容容器 -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 flex items-center justify-center">
+
+    <!-- Slide 1: 封面 -->
+    <section class="slide w-full slide-enter" data-slide="1">
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 border border-slate-700/80 p-8 md:p-14 shadow-2xl">
+        <div class="absolute -right-20 -top-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-4xl">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/30 rounded-full text-xs font-medium mb-6">
+            <span>🏫 鳳鳴國中 115 學年度第 1 學期 公開授課教學活動</span>
+          </div>
+
+          <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-blue-300 leading-tight tracking-tight mb-4">
+            循跡達人
+          </h1>
+          <h2 class="text-2xl md:text-3xl font-bold text-blue-400 mb-8 flex items-center space-x-3">
+            <span>Matrix 機器人 十線循跡感測器程式設計實戰</span>
+          </h2>
+
+          <p class="text-slate-300 text-base md:text-lg mb-10 leading-relaxed max-w-2xl">
+            從光學反射原理到十通道陣列解析，引導七年級學生運用運算思維、二分法邏輯判斷與迴圈結構，親手調校出高速平穩的自走循跡機器人！
+          </p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-700/80">
+            <div class="bg-slate-800/60 rounded-xl p-3 border border-slate-700/50">
+              <span class="text-xs text-slate-400 block mb-1">授課教師</span>
+              <span class="text-sm font-bold text-slate-100 flex items-center">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span>吳昌年 老師
+              </span>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-3 border border-slate-700/50">
+              <span class="text-xs text-slate-400 block mb-1">實施對象</span>
+              <span class="text-sm font-bold text-slate-100">國中七年級 (1節45分)</span>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-3 border border-slate-700/50">
+              <span class="text-xs text-slate-400 block mb-1">領域 / 科目</span>
+              <span class="text-sm font-bold text-blue-400">科技領域 / 資訊科技</span>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-3 border border-slate-700/50">
+              <span class="text-xs text-slate-400 block mb-1">教學地點</span>
+              <span class="text-sm font-bold text-indigo-300">電腦教室 / 3F多功能</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 2: 課程理念與素養對應 -->
+    <section class="slide w-full hidden" data-slide="2">
+      <div class="rounded-3xl bg-slate-800/90 border border-slate-700 p-6 md:p-10 shadow-xl">
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-700">
+          <div>
+            <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider">Curriculum Foundation</span>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">設計理念與 108 課綱素養對應</h2>
+          </div>
+          <span class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-xs">學校願景：落實資訊教育生活化</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700/80 flex flex-col justify-between">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-lg mb-4">
+                01
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2">學習動機與興趣激發</h3>
+              <p class="text-sm text-slate-300 leading-relaxed">
+                利用具象化的 MATRIX 智能車動態展示，讓學生親眼看見程式代碼轉化為車體實體運動，點燃學習熱忱。
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-blue-400 font-medium">
+              連結生活：自駕車與倉儲搬運機器人
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700/80 flex flex-col justify-between">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-lg mb-4">
+                02
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2">邏輯思維與專注力</h3>
+              <p class="text-sm text-slate-300 leading-relaxed">
+                剖析十線循跡感測器的空間感應機制，讓抽象的「二分法、陣列索引、條件分支」轉為清楚的決策流程圖。
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-purple-400 font-medium">
+              運算思維：分解、模式識別、抽象化
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700/80 flex flex-col justify-between">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg mb-4">
+                03
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2">做中學實證與除錯</h3>
+              <p class="text-sm text-slate-300 leading-relaxed">
+                教導微電腦與積木編程，在黑線實跑中遇錯（跑偏、衝出、光線干擾），培養工程師耐心 Debug 與參數校正能力。
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-emerald-400 font-medium">
+              核心精神：發現問題、調整參數、驗證解法
+            </div>
+          </div>
+        </div>
+
+        <!-- 課綱素養標籤 -->
+        <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-700/60 flex flex-wrap items-center gap-3">
+          <span class="text-xs font-bold text-slate-400">課綱核定指標：</span>
+          <span class="px-3 py-1 bg-blue-900/50 text-blue-300 border border-blue-700/50 rounded-lg text-xs font-medium">
+            🎯 科-J-B1 科技符號與運算思維
+          </span>
+          <span class="px-3 py-1 bg-indigo-900/50 text-indigo-300 border border-indigo-700/50 rounded-lg text-xs font-medium">
+            🎯 科-J-B2 善用科技媒體與思辨
+          </span>
+          <span class="px-3 py-1 bg-teal-900/50 text-teal-300 border border-teal-700/50 rounded-lg text-xs font-medium">
+            📚 資 A-IV-1 演算法基本概念
+          </span>
+          <span class="px-3 py-1 bg-amber-900/50 text-amber-300 border border-amber-700/50 rounded-lg text-xs font-medium">
+            📚 資 P-IV-1 & 2 結構化程式設計
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 3: 三維學習目標 -->
+    <section class="slide w-full hidden" data-slide="3">
+      <div class="rounded-3xl bg-slate-800/90 border border-slate-700 p-6 md:p-10 shadow-xl">
+        <div class="mb-8 pb-4 border-b border-slate-700">
+          <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider">Learning Objectives</span>
+          <h2 class="text-2xl md:text-3xl font-bold text-white">三維教學目標結構體系</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- 知識與理解 -->
+          <div class="bg-slate-900/90 rounded-2xl p-6 border-t-4 border-blue-500 shadow-lg flex flex-col justify-between">
+            <div>
+              <div class="flex items-center space-x-2 text-blue-400 mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <h3 class="text-lg font-bold text-white">知識與理解</h3>
+              </div>
+              <ul class="space-y-4 text-sm text-slate-300">
+                <li class="flex items-start space-x-2">
+                  <span class="text-blue-400 font-bold mt-0.5">•</span>
+                  <span><strong class="text-white">光學反射機制：</strong>明白紅外線發射與接收原理，建立「黑線吸收、白底反射」的數值感測判斷基礎。</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-blue-400 font-bold mt-0.5">•</span>
+                  <span><strong class="text-white">十通道陣列解析：</strong>理解 10 個獨立感測點的排列與空間位置解析度，明瞭多通道相較傳統單雙眼感測器的優勢。</span>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-6 bg-slate-800/80 rounded-xl p-3 text-xs text-blue-300 border border-slate-700">
+              💡 核心認知：數值高=反射白底，數值低=吸收黑線
+            </div>
+          </div>
+
+          <!-- 實作與技能 -->
+          <div class="bg-slate-900/90 rounded-2xl p-6 border-t-4 border-emerald-500 shadow-lg flex flex-col justify-between">
+            <div>
+              <div class="flex items-center space-x-2 text-emerald-400 mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <h3 class="text-lg font-bold text-white">實作與技能</h3>
+              </div>
+              <ul class="space-y-4 text-sm text-slate-300">
+                <li class="flex items-start space-x-2">
+                  <span class="text-emerald-400 font-bold mt-0.5">•</span>
+                  <span><strong class="text-white">硬體安裝校準：</strong>學會正確架設十線感測器離地距離（5-10mm），避免過高感應失真或過低磨擦地面。</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-emerald-400 font-bold mt-0.5">•</span>
+                  <span><strong class="text-white">積木程式拖曳：</strong>透過 Matrix Block 軟體正確讀取通道陣列數值，撰寫無窮迴圈與差速轉向修正積木。</span>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-6 bg-slate-800/80 rounded-xl p-3 text-xs text-emerald-300 border border-slate-700">
+              ⚡ 技能重點：左右輪差速修正、中心平穩走行
+            </div>
+          </div>
+
+          <!-- 運算思維與問題解決 -->
+          <div class="bg-slate-900/90 rounded-2xl p-6 border-t-4 border-amber-500 shadow-lg flex flex-col justify-between">
+            <div>
+              <div class="flex items-center space-x-2 text-amber-400 mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                <h3 class="text-lg font-bold text-white">運算思維與除錯</h3>
+              </div>
+              <ul class="space-y-4 text-sm text-slate-300">
+                <li class="flex items-start space-x-2">
+                  <span class="text-amber-400 font-bold mt-0.5">•</span>
+                  <span><strong class="text-white">序列埠數據監控：</strong>即時觀察 10 個通道數值變化，找出是硬體馬達問題、軌道膠帶反光還是環境日光干擾。</span>
+                </li>
+                <li class="flex items-start space-x-2">
+                  <span class="text-amber-400 font-bold mt-0.5">•</span>
+                  <span><strong class="text-white">動態除錯 (Debug)：</strong>學習調整車速參數（初期建議 25-30），掌握「速度與感測靈敏度」之物理平衡。</span>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-6 bg-slate-800/80 rounded-xl p-3 text-xs text-amber-300 border border-slate-700">
+              🛠️ 工程思維：透過測試現象反推程式邏輯瑕疵
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4: 十線感測器原理與對比 -->
+    <section class="slide w-full hidden" data-slide="4">
+      <div class="rounded-3xl bg-slate-800/90 border border-slate-700 p-6 md:p-10 shadow-xl">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700">
+          <div>
+            <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider">Hardware & Sensing Array</span>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">十線感測器 vs 傳統單/雙探頭</h2>
+          </div>
+          <span class="px-3 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-lg text-xs font-semibold">
+            Matrix 10-Channel Sensor
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div>
+            <h3 class="text-lg font-bold text-slate-200 mb-3">感測器運作本質：紅外線反射差異</h3>
+            <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700 mb-6 space-y-3">
+              <div class="flex items-center justify-between p-3 bg-slate-800/80 rounded-xl border border-slate-700">
+                <div class="flex items-center space-x-3">
+                  <span class="w-4 h-4 rounded-full bg-white shadow-sm border border-slate-400"></span>
+                  <span class="font-bold text-sm text-slate-200">白底地面 (White Floor)</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs text-emerald-400 font-bold">全反射回收</span>
+                  <span class="text-xs text-slate-400 block code-font">數值 1 / High (高電位)</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-slate-800/80 rounded-xl border border-slate-700">
+                <div class="flex items-center space-x-3">
+                  <span class="w-4 h-4 rounded-full bg-slate-950 border border-slate-700"></span>
+                  <span class="font-bold text-sm text-slate-200">黑色膠帶軌道 (Black Line)</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs text-amber-400 font-bold">紅外線被吸收</span>
+                  <span class="text-xs text-slate-400 block code-font">數值 0 / Low (低電位)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 對比表格 -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="border-b border-slate-700 text-slate-400">
+                    <th class="py-2">比較項目</th>
+                    <th class="py-2 text-slate-300">傳統雙探頭 (2-CH)</th>
+                    <th class="py-2 text-blue-400 font-bold">Matrix 十通道陣列 (10-CH)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800 text-slate-300">
+                  <tr>
+                    <td class="py-2.5 font-medium text-slate-400">空間解析度</td>
+                    <td class="py-2.5">僅左右二選一</td>
+                    <td class="py-2.5 text-blue-300 font-bold">10 階精細偏向度量測</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 font-medium text-slate-400">高速行駛穩定度</td>
+                    <td class="py-2.5">劇烈左右搖晃 (S型甩尾)</td>
+                    <td class="py-2.5 text-emerald-400 font-bold">平滑微調轉向，直線高速平穩</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 font-medium text-slate-400">特殊路況應變</td>
+                    <td class="py-2.5">易出軌、無法辨識十字</td>
+                    <td class="py-2.5 text-indigo-300 font-bold">可精準偵測全黑（直角彎/十字路口）</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 視覺化感測器陣列模擬視圖 -->
+          <div class="bg-slate-950 rounded-2xl p-6 border border-slate-700/80 flex flex-col items-center">
+            <span class="text-xs font-semibold text-slate-400 mb-4">十通道紅外線感測器陣列排列 (D1 - D10)</span>
+            
+            <!-- 模擬感測器排針板 -->
+            <div class="w-full bg-slate-900 border-2 border-slate-600 rounded-2xl p-4 mb-6 shadow-inner">
+              <div class="grid grid-cols-10 gap-1.5 text-center">
+                <div class="flex flex-col items-center"><span class="text-[10px] text-slate-400 mb-1">1</span><div class="w-6 h-6 rounded-md bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[10px] font-bold text-emerald-300">1</div></div>
+                <div class="flex flex-col items-center"><span class="text-[10px] text-slate-400 mb-1">2</span><div class="w-6 h-6 rounded-md bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[10px] font-bold text-emerald-300">1</div></div>
+                <div class="flex flex-col items-center"><span class="text-[10px] text-slate-400 mb-1">3</span><div class="w-6 h-6 rounded-md bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[10px] font-bold text-emerald-300">1</div></div>
+                <div class="flex flex-col items-center"><span class="text-[10px] text-slate-400 mb-1">4</span><div class="w-6 h-6 rounded-md bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[10px] font-bold text-emerald-300">1</div></div>
+                <!-- 壓黑線區域 -->
+                <div class="flex flex-col items-center"><span class="text-[10px] text-amber-400 font-bold mb-1">5</span><div class="w-6 h-6 rounded-md bg-amber-500 border border-amber-300 shadow-md shadow-amber-500/40 flex items-center justify-center text-[10px] font-bold text-black animate-pulse">0</div></div>
+                <div class="flex flex-col items-center"><span class="text-[10px] text-amber-400 font-bold mb-1">6</span><div class="w-6 h-6 rounded-md bg-amber-500 border border-amber-300 shadow-md shadow-amber-500/40 flex items-center justify-center text-[10px] font-bold text-black animate-pulse">0</div></div>
+                
+                <div class="flex flex-col items-center"><span class="text-[10px] text-slate-400 mb-1">7</span><div class="w-6 h-6 rounded-md bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[10px] font-bold text-emerald-300">1</div></div>
+                <div class="flex flex-col items-center"><span class="text-[10px] text-slate-400 mb-1">8</span><div class="w-6 h-6 rounded-md bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[10px] font-bold text-emerald-300">1</div></div>
+                <div class="flex flex-col items-center"><span class="text-[10px] text-slate-400 mb-1">9</span><div class="w-6 h-6 rounded-md bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[10px] font-bold text-emerald-300">1</div></div>
+                <div class="flex flex-col items-center"><span class="text-[10px] text-slate-400 mb-1">10</span><div class="w-6 h-6 rounded-md bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-[10px] font-bold text-emerald-300">1</div></div>
+              </div>
+              <div class="mt-4 flex justify-between text-[11px] px-2 text-slate-400">
+                <span class="text-blue-400 font-semibold">← 車體左側 (L)</span>
+                <span class="text-amber-400 font-bold">▲ 5號與6號為正中心</span>
+                <span class="text-indigo-400 font-semibold">車體右側 (R) →</span>
+              </div>
+            </div>
+
+            <div class="w-full bg-slate-900/80 rounded-xl p-3 border border-slate-800 text-xs text-slate-300">
+              <span class="font-bold text-emerald-400">目前判定狀態：</span>
+              <span>中心 5, 6 號壓線（數值為0）➜ 左右輪等速直行 (L:30, R:30)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 5: 核心演算法：二分法與門檻值 -->
+    <section class="slide w-full hidden" data-slide="5">
+      <div class="rounded-3xl bg-slate-800/90 border border-slate-700 p-6 md:p-10 shadow-xl">
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-700">
+          <div>
+            <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider">Algorithmic Decision</span>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">核心演算法：閾值計算與二分法決策樹</h2>
+          </div>
+          <span class="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-lg text-xs font-semibold">二分法 (Binary Decision)</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div class="space-y-5">
+            <!-- 門檻計算公式卡片 -->
+            <div class="bg-gradient-to-r from-blue-900/40 to-indigo-900/40 rounded-2xl p-5 border border-blue-600/40">
+              <h3 class="text-sm font-bold text-blue-300 uppercase tracking-wider mb-2">門檻平均值 (Threshold) 演算法</h3>
+              <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center mb-3">
+                <div class="text-lg md:text-xl font-bold text-white code-font">
+                  門檻值 = ( 白底感測值 + 黑線感測值 ) / 2
+                </div>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                透過課前校準測得白底數值（例如 800）與黑色膠帶數值（例如 200），相加取均值 <strong class="text-blue-300">500</strong> 作為軟體二分判斷切分點。高於此值視為白，低於此值視為黑。
+              </p>
+            </div>
+
+            <!-- 控制邏輯法則 -->
+            <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700/80">
+              <h3 class="text-sm font-bold text-slate-200 mb-3">差速轉向控制三法則 (Differential Steering)</h3>
+              <div class="space-y-2.5 text-xs">
+                <div class="p-2.5 bg-slate-800/80 rounded-lg border-l-4 border-blue-400 flex items-center justify-between">
+                  <span class="font-bold text-slate-200">1. 車身正中 (D5, D6 壓線)</span>
+                  <span class="text-blue-400 code-font">左輪 30, 右輪 30 ➜ 直行前進</span>
+                </div>
+                <div class="p-2.5 bg-slate-800/80 rounded-lg border-l-4 border-amber-400 flex items-center justify-between">
+                  <span class="font-bold text-slate-200">2. 車身偏左 (D2, D3 壓線)</span>
+                  <span class="text-amber-400 code-font">左輪 35, 右輪 15 ➜ 向右修正</span>
+                </div>
+                <div class="p-2.5 bg-slate-800/80 rounded-lg border-l-4 border-emerald-400 flex items-center justify-between">
+                  <span class="font-bold text-slate-200">3. 車身偏右 (D8, D9 壓線)</span>
+                  <span class="text-emerald-400 code-font">左輪 15, 右輪 35 ➜ 向左修正</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 邏輯流程圖 (SVG) -->
+          <div class="bg-slate-950 rounded-2xl p-6 border border-slate-700 flex flex-col items-center">
+            <span class="text-xs font-semibold text-slate-400 mb-4">系統決策執行流程 (無窮迴圈 Repeat Forever)</span>
+            
+            <div class="w-full max-w-sm space-y-3 text-center">
+              <div class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold shadow-md">
+                重複無限次 (無窮迴圈 Loop)
+              </div>
+              <div class="text-slate-500">↓</div>
+              <div class="px-4 py-2 bg-slate-800 text-cyan-300 border border-cyan-500/40 rounded-xl text-xs font-bold">
+                讀取 10 線感測器陣列即時數值
+              </div>
+              <div class="text-slate-500">↓</div>
+              <div class="p-3 bg-amber-500/10 border border-amber-500/40 rounded-xl text-xs text-amber-200">
+                <span class="font-bold block text-white mb-1">二分法條件式 (If / Else)</span>
+                感測器數值是否小於門檻值？
+              </div>
+              <div class="grid grid-cols-2 gap-3 text-xs pt-1">
+                <div class="p-2.5 bg-slate-800/90 border border-emerald-500/40 rounded-xl">
+                  <span class="text-emerald-400 font-bold block mb-1">【是】偵測到黑線</span>
+                  <span class="text-slate-300">執行對應方向馬達修正</span>
+                </div>
+                <div class="p-2.5 bg-slate-800/90 border border-blue-500/40 rounded-xl">
+                  <span class="text-blue-400 font-bold block mb-1">【否】全白無黑線</span>
+                  <span class="text-slate-300">維持既有微向尋線搜尋</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 6: Matrix Block 積木程式拆解 -->
+    <section class="slide w-full hidden" data-slide="6">
+      <div class="rounded-3xl bg-slate-800/90 border border-slate-700 p-6 md:p-10 shadow-xl">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700">
+          <div>
+            <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider">Visual Programming</span>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">Matrix Block 圖形化程式積木架構</h2>
+          </div>
+          <span class="px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-lg text-xs font-semibold">Blockly Coding</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- 積木模擬卡 1: 初始化 -->
+          <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold text-slate-400">Step 1</span>
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-[11px]">環境配置</span>
+              </div>
+              <h3 class="text-base font-bold text-white mb-3">埠號通訊與感測器初始化</h3>
+              <!-- 積木外觀 -->
+              <div class="space-y-2 mb-4">
+                <div class="bg-amber-600 text-white rounded-lg px-3 py-2 text-xs font-bold shadow">
+                  當 程式啟動時
+                </div>
+                <div class="ml-3 border-l-2 border-amber-600/50 pl-3 space-y-2">
+                  <div class="bg-blue-600 text-white rounded-lg px-3 py-1.5 text-xs font-medium shadow">
+                    設定十線感測器 I2C 連接埠: <span class="bg-blue-800 px-1.5 py-0.5 rounded text-[11px]">PORT_1</span>
+                  </div>
+                  <div class="bg-emerald-600 text-white rounded-lg px-3 py-1.5 text-xs font-medium shadow">
+                    馬達驅動器初始化: <span class="bg-emerald-800 px-1.5 py-0.5 rounded text-[11px]">M1 (左), M2 (右)</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                確保機器人控制器正確辨識硬體通訊位址，避免因 I2C 鬆脫造成無法讀取感測狀態。
+              </p>
+            </div>
+          </div>
+
+          <!-- 積木模擬卡 2: 主迴圈 -->
+          <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold text-slate-400">Step 2</span>
+                <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-[11px]">核心邏輯</span>
+              </div>
+              <h3 class="text-base font-bold text-white mb-3">無窮迴圈與即時感測</h3>
+              <!-- 積木外觀 -->
+              <div class="space-y-2 mb-4">
+                <div class="bg-purple-600 text-white rounded-lg px-3 py-2 text-xs font-bold shadow">
+                  重複無限次 (Loop)
+                </div>
+                <div class="ml-3 border-l-2 border-purple-600/50 pl-3 space-y-2">
+                  <div class="bg-indigo-600 text-white rounded-lg px-3 py-1.5 text-xs font-medium shadow">
+                    設 變數 <span class="text-yellow-300 font-bold">[陣列資料]</span> 為 讀取十線感測器狀態
+                  </div>
+                  <div class="bg-orange-500 text-white rounded-lg px-3 py-1.5 text-xs font-medium shadow">
+                    如果 <span class="bg-orange-700 px-1 rounded">[感測器5] == 0</span> 那麼
+                  </div>
+                  <div class="ml-3 bg-teal-600 text-white rounded-lg px-3 py-1 text-[11px] shadow">
+                    設定左右馬達速度 (30, 30)
+                  </div>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                利用無限迴圈不斷刷新感測陣列值，反應頻率每秒可達數十次，確保及時回饋輪速。
+              </p>
+            </div>
+          </div>
+
+          <!-- 積木模擬卡 3: 差速修正 -->
+          <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold text-slate-400">Step 3</span>
+                <span class="px-2 py-0.5 bg-teal-500/20 text-teal-400 rounded text-[11px]">動態修正</span>
+              </div>
+              <h3 class="text-base font-bold text-white mb-3">偏航差速控制條件分支</h3>
+              <!-- 積木外觀 -->
+              <div class="space-y-2 mb-4">
+                <div class="bg-orange-600 text-white rounded-lg px-3 py-1.5 text-xs font-medium shadow">
+                  否則如果 <span class="bg-orange-800 px-1 rounded">[感測器2] == 0</span> 那麼
+                </div>
+                <div class="ml-3 bg-emerald-600 text-white rounded-lg px-3 py-1 text-[11px] shadow">
+                  設定 馬達速度 左輪: 35, 右輪: 15 (右偏)
+                </div>
+                <div class="bg-orange-600 text-white rounded-lg px-3 py-1.5 text-xs font-medium shadow">
+                  否則如果 <span class="bg-orange-800 px-1 rounded">[感測器9] == 0</span> 那麼
+                </div>
+                <div class="ml-3 bg-emerald-600 text-white rounded-lg px-3 py-1 text-[11px] shadow">
+                  設定 馬達速度 左輪: 15, 右輪: 35 (左偏)
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                透過外側感測器壓線判斷偏離程度，給予外輪加速、內輪減速之「差速」，拉回黑線中心。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 7: 互動式十線循跡實驗室 (Simulator) -->
+    <section class="slide w-full hidden" data-slide="7">
+      <div class="rounded-3xl bg-slate-800/90 border border-slate-700 p-6 md:p-8 shadow-xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 pb-3 border-b border-slate-700 gap-2">
+          <div>
+            <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Interactive Simulator</span>
+            <h2 class="text-xl md:text-2xl font-bold text-white">互動實驗室：十通道循跡動態演算模擬器</h2>
+          </div>
+          <span class="text-xs text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
+            請拖曳下方滑桿模擬黑線偏軌狀態 🎯
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <!-- 左側控制器與軌道模擬 -->
+          <div class="lg:col-span-7 bg-slate-950 p-6 rounded-2xl border border-slate-700/80 space-y-6">
+            <!-- 軌道視覺化 -->
+            <div>
+              <div class="flex justify-between text-xs text-slate-400 mb-2">
+                <span>軌道左邊界</span>
+                <span class="font-bold text-slate-200">白色底盤測試賽道 (White Mat)</span>
+                <span>軌道右邊界</span>
+              </div>
+              <div class="relative w-full h-24 bg-slate-200 rounded-xl overflow-hidden border-2 border-slate-500 shadow-inner flex items-center">
+                <!-- 黑線 (動態位置) -->
+                <div id="simBlackLine" class="absolute h-full bg-slate-950 transition-all duration-150 flex items-center justify-center" style="width: 50px; left: calc(50% - 25px);">
+                  <span class="text-[10px] text-slate-400 font-mono rotate-90 select-none">黑線膠帶</span>
+                </div>
+                <!-- 車體感測器探頭群指標 -->
+                <div class="absolute inset-x-0 bottom-1 flex justify-around px-4 pointer-events-none">
+                  <div class="w-full flex justify-between">
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 滑桿控制 -->
+            <div>
+              <div class="flex justify-between text-xs mb-2">
+                <span class="text-blue-400 font-bold">← 車體大幅偏右 (黑線在左)</span>
+                <span class="text-emerald-400 font-bold">置中 (理想直線)</span>
+                <span class="text-indigo-400 font-bold">車體大幅偏左 (黑線在右) →</span>
+              </div>
+              <input type="range" id="linePositionSlider" min="0" max="100" value="50" class="w-full h-3 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+            </div>
+
+            <!-- 即時感測器 10 燈號陣列 -->
+            <div>
+              <div class="text-xs text-slate-400 mb-2 flex justify-between">
+                <span>十線感測器讀值陣列 (0: 壓黑線, 1: 白底)</span>
+                <span id="activeSensorsText" class="text-blue-400 font-mono font-bold">通道 5, 6 觸發</span>
+              </div>
+              <div class="grid grid-cols-10 gap-1.5" id="sensorLeds">
+                <!-- JS 動態生成 10 個感測點 -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 右側動態運算決策輸出 -->
+          <div class="lg:col-span-5 space-y-4">
+            <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700 space-y-4">
+              <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between">
+                <span>運算決策即時回饋</span>
+                <span id="decisionBadge" class="px-2.5 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                  穩態直行
+                </span>
+              </h3>
+
+              <!-- 馬達速度即時儀表 -->
+              <div class="grid grid-cols-2 gap-3 pt-2">
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-center">
+                  <span class="text-[11px] text-slate-400 block mb-1">左輪馬達 (Left Motor)</span>
+                  <span id="leftMotorSpeed" class="text-2xl font-black text-blue-400 code-font">30</span>
+                  <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div id="leftMotorBar" class="bg-blue-500 h-full" style="width: 60%;"></div>
+                  </div>
+                </div>
+
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-center">
+                  <span class="text-[11px] text-slate-400 block mb-1">右輪馬達 (Right Motor)</span>
+                  <span id="rightMotorSpeed" class="text-2xl font-black text-indigo-400 code-font">30</span>
+                  <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div id="rightMotorBar" class="bg-indigo-500 h-full" style="width: 60%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 動作說明 -->
+              <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs leading-relaxed text-slate-300">
+                <span class="text-slate-400 block mb-1">車體動態修正指令：</span>
+                <span id="actionExplanation" class="text-emerald-300 font-medium">
+                  黑線位於車體正中央，感測器 D5、D6 同步感應，兩輪保持等速前行。
+                </span>
+              </div>
+            </div>
+
+            <!-- 預設情境按鈕 -->
+            <div class="flex gap-2">
+              <button onclick="setScenario(15)" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg border border-slate-700 transition">
+                左急彎
+              </button>
+              <button onclick="setScenario(50)" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs rounded-lg border border-slate-700 font-bold transition">
+                正中直行
+              </button>
+              <button onclick="setScenario(85)" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg border border-slate-700 transition">
+                右急彎
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 8: 45分鐘教學時間軸與流程拆解 -->
+    <section class="slide w-full hidden" data-slide="8">
+      <div class="rounded-3xl bg-slate-800/90 border border-slate-700 p-6 md:p-10 shadow-xl">
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-700">
+          <div>
+            <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider">Lesson Timeline</span>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">45 分鐘公開授課流程與時間分配</h2>
+          </div>
+          <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-lg text-xs font-bold">1 節課 45 分鐘</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-5 gap-4 mb-8">
+          <!-- 階段 1 -->
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-700 flex flex-col justify-between">
+            <div>
+              <span class="text-xs font-bold text-blue-400">00 - 05 分鐘</span>
+              <h3 class="text-base font-bold text-white mt-1 mb-2">引起動機</h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                實車行走示範或影片播放。提問：「為什麼機器人知道自己歪掉了？」引導發現 10 顆紅外線眼睛。
+              </p>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+              🗣️ 教師提問、學生觀察思考
+            </div>
+          </div>
+
+          <!-- 階段 2 -->
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-700 flex flex-col justify-between">
+            <div>
+              <span class="text-xs font-bold text-purple-400">05 - 15 分鐘</span>
+              <h3 class="text-base font-bold text-white mt-1 mb-2">邏輯拆解</h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                黑板 10 號長磁鐵模擬移動。講解「二分法判斷式」與「無窮迴圈」，以黑白平均值作為判斷門檻。
+              </p>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+              🧲 教具示範、觀念拆解
+            </div>
+          </div>
+
+          <!-- 階段 3 -->
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-blue-500/50 bg-blue-950/20 flex flex-col justify-between">
+            <div>
+              <span class="text-xs font-bold text-blue-300">15 - 30 分鐘</span>
+              <h3 class="text-base font-bold text-white mt-1 mb-2">官網編程</h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                開啟 Matrix Block 軟體。帶領積木拖曳：讀取陣列感測器 + 左右馬達轉向條件判斷，連線燒錄。
+              </p>
+            </div>
+            <div class="mt-4 pt-2 border-t border-blue-900/50 text-[11px] text-blue-400 font-medium">
+              💻 一人一機、實作編碼
+            </div>
+          </div>
+
+          <!-- 階段 4 -->
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-emerald-500/50 bg-emerald-950/20 flex flex-col justify-between">
+            <div>
+              <span class="text-xs font-bold text-emerald-300">30 - 40 分鐘</span>
+              <h3 class="text-base font-bold text-white mt-1 mb-2">實作除錯</h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                黑線軌道實跑！巡視指導車速初設（25-30）、拉窗簾排除光害、解決馬達轉向問題。
+              </p>
+            </div>
+            <div class="mt-4 pt-2 border-t border-emerald-900/50 text-[11px] text-emerald-400 font-medium">
+              🏎️ 實地跑車、Debug 調校
+            </div>
+          </div>
+
+          <!-- 階段 5 -->
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-700 flex flex-col justify-between">
+            <div>
+              <span class="text-xs font-bold text-amber-400">40 - 45 分鐘</span>
+              <h3 class="text-base font-bold text-white mt-1 mb-2">成果與學習單</h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                「循線達人」小挑戰賽驗收。引導填寫實作學習單，反思除錯歷程，總結重點並器材歸位。
+              </p>
+            </div>
+            <div class="mt-4 pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+              📝 學習單總結、器材收納
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-700 flex items-center justify-between text-xs text-slate-400">
+          <span>🎯 教學場域規劃：多功能3F/電腦教室（劃分「電腦撰寫區」與「黑色膠帶檢測跑道區」雙區流暢動線）</span>
+          <span class="text-blue-400 font-semibold">授課教師：吳昌年</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 9: 實務除錯 (Debug) 與教學機智 -->
+    <section class="slide w-full hidden" data-slide="9">
+      <div class="rounded-3xl bg-slate-800/90 border border-slate-700 p-6 md:p-10 shadow-xl">
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-700">
+          <div>
+            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Troubleshooting & Insights</span>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">常見除錯情境 (Debug) 與課堂教學機智</h2>
+          </div>
+          <span class="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-lg text-xs font-semibold">課堂現場實錄</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <!-- 案例 1: 環境光線干擾 -->
+          <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700 flex items-start space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 text-xl font-bold">
+              ☀️
+            </div>
+            <div>
+              <div class="flex items-center space-x-2 mb-1">
+                <span class="px-2 py-0.5 bg-amber-900/60 text-amber-300 rounded text-[11px] font-bold">觀課亮點 A-4-3</span>
+                <h3 class="text-base font-bold text-white">環境光線干擾感測器</h3>
+              </div>
+              <p class="text-xs text-slate-300 mb-2 leading-relaxed">
+                <strong>現況：</strong>窗外陽光或室內反射造成紅外線數值偏移，黑線誤判為白底，車子直接衝出軌道。
+              </p>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs text-emerald-400 font-medium">
+                💡 <strong>教學機智應變：</strong>教師立即引導拉上教室窗簾，阻絕直射強光，恢復感測器穩定閾值。
+              </div>
+            </div>
+          </div>
+
+          <!-- 案例 2: 車體不動排障 -->
+          <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700 flex items-start space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 text-xl font-bold">
+              ⚙️
+            </div>
+            <div>
+              <div class="flex items-center space-x-2 mb-1">
+                <span class="px-2 py-0.5 bg-blue-900/60 text-blue-300 rounded text-[11px] font-bold">觀課亮點 B-1-2</span>
+                <h3 class="text-base font-bold text-white">學生機器人通電後靜止不動</h3>
+              </div>
+              <p class="text-xs text-slate-300 mb-2 leading-relaxed">
+                <strong>現況：</strong>學生程式已燒錄但車輛無反應，容易產生挫折感並停滯。
+              </p>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs text-blue-300 font-medium">
+                💡 <strong>教學機智應變：</strong>走動至學生旁，引導學生步驟化排查：USB 供電、馬達接線端子與輪軸是否卡阻。
+              </div>
+            </div>
+          </div>
+
+          <!-- 案例 3: 車速過快劇烈甩尾 -->
+          <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700 flex items-start space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 text-xl font-bold">
+              🏎️
+            </div>
+            <div>
+              <div class="flex items-center space-x-2 mb-1">
+                <span class="px-2 py-0.5 bg-purple-900/60 text-purple-300 rounded text-[11px] font-bold">實作建議</span>
+                <h3 class="text-base font-bold text-white">車速設定過大（例如 60-80）</h3>
+              </div>
+              <p class="text-xs text-slate-300 mb-2 leading-relaxed">
+                <strong>現況：</strong>馬達轉速過快導致慣性太大，當感測器偵測到黑線時馬達已來不及差速轉向而衝出。
+              </p>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs text-purple-300 font-medium">
+                💡 <strong>建議調校：</strong>嚴格規範初期測試車速設為 25-30，待平穩過彎後再逐步加大。
+              </div>
+            </div>
+          </div>
+
+          <!-- 案例 4: 感測器離地距離不當 -->
+          <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700 flex items-start space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 text-xl font-bold">
+              📏
+            </div>
+            <div>
+              <div class="flex items-center space-x-2 mb-1">
+                <span class="px-2 py-0.5 bg-teal-900/60 text-teal-300 rounded text-[11px] font-bold">硬體調校</span>
+                <h3 class="text-base font-bold text-white">感測板距離地面太高或過低</h3>
+              </div>
+              <p class="text-xs text-slate-300 mb-2 leading-relaxed">
+                <strong>現況：</strong>太高導致反射散射訊號衰減，太低易在行進震動時碰撞地面造成硬體損壞。
+              </p>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs text-teal-300 font-medium">
+                💡 <strong>黃金距離：</strong>使用墊片將感測器下緣與賽道表面維持約 5 - 8 mm 最適焦距。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 10: 總結、評量與課後精進 -->
+    <section class="slide w-full hidden" data-slide="10">
+      <div class="rounded-3xl bg-slate-800/90 border border-slate-700 p-6 md:p-10 shadow-xl">
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-700">
+          <div>
+            <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Assessment & Summary</span>
+            <h2 class="text-2xl md:text-3xl font-bold text-white">多元評量成效與後續延伸學習</h2>
+          </div>
+          <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-lg text-xs font-bold">課堂總結</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700">
+            <div class="text-emerald-400 font-bold text-sm mb-2">🎯 實作動態評量</div>
+            <h3 class="text-base font-bold text-white mb-2">賽道完成度與過彎穩定</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              以機器人實際於黑線賽道上能否完整繞行一圈為客觀指標，檢驗差速修正邏輯的落實度。
+            </p>
+          </div>
+
+          <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700">
+            <div class="text-blue-400 font-bold text-sm mb-2">📝 紙筆與數位學習單</div>
+            <h3 class="text-base font-bold text-white mb-2">邏輯流程與除錯歷程記錄</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              要求學生在學習單上記錄初始車速、遭遇問題（如左偏、光害）、解決方案與最終心得。
+            </p>
+          </div>
+
+          <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700">
+            <div class="text-purple-400 font-bold text-sm mb-2">🤝 課堂行為與態度評量</div>
+            <h3 class="text-base font-bold text-white mb-2">器材愛護、同儕互助協作</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              評估學生在 1 人 1 機實作時的專注投入度，以及當同儕遇障礙時的討論與經驗分享。
+            </p>
+          </div>
+        </div>
+
+        <!-- 延伸挑戰與下一節課銜接 -->
+        <div class="bg-gradient-to-r from-slate-900 via-indigo-950/60 to-slate-900 rounded-2xl p-6 border border-indigo-700/50 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <h4 class="text-base font-bold text-white mb-1">🚀 課程延伸：進階循跡達人挑戰（下一節預告）</h4>
+            <p class="text-xs text-slate-300">
+              處理賽道上的極限路況：90度直角彎、十字交叉路口直行判斷、以及「PID 比例微積分」平滑平穩高速循跡算法探討。
+            </p>
+          </div>
+          <a href="觀議課統整分析儀表板.html" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shrink-0 shadow-lg shadow-blue-600/30 transition">
+            前往觀議課統整分析 →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 簡報底部導航列 -->
+  <footer class="bg-slate-950/90 border-t border-slate-800 px-6 py-3 flex items-center justify-between text-xs text-slate-400">
+    <div class="flex items-center space-x-4">
+      <span class="hidden sm:inline">鍵盤快捷鍵：<kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">←</kbd> 上一頁 / <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">→</kbd> 或 <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">Space</kbd> 下一頁</span>
+    </div>
+    <div class="flex items-center space-x-2">
+      <button onclick="prevSlide()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-medium">上一頁</button>
+      <button onclick="nextSlide()" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold">下一頁</button>
+    </div>
+  </footer>
+
+  <!-- 投影片總覽彈窗 (Overview Modal) -->
+  <div id="overviewModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex-col p-6 overflow-y-auto">
+    <div class="flex items-center justify-between max-w-6xl mx-auto w-full mb-6 pb-4 border-b border-slate-800">
+      <h2 class="text-xl font-bold text-white">投影片目錄總覽</h2>
+      <button onclick="toggleOverview()" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="max-w-6xl mx-auto w-full grid grid-cols-2 md:grid-cols-5 gap-4" id="overviewGrid">
+      <!-- 由 JS 動態生成 10 個縮圖按鈕 -->
+    </div>
+  </div>
+
+  <script>
+    const totalSlides = 10;
+    let currentSlide = 1;
+
+    const slideTitles = [
+      "1. 課程封面：循跡達人",
+      "2. 設計理念與課綱素養",
+      "3. 三維教學目標體系",
+      "4. 十線感測器原理與對比",
+      "5. 核心演算法與二分法決策",
+      "6. Matrix Block 積木拆解",
+      "7. 互動模擬器：循跡實驗室",
+      "8. 45分鐘公開授課流程",
+      "9. 課堂除錯與教學機智",
+      "10. 多元評量與總結"
+    ];
+
+    function showSlide(index) {
+      if (index < 1) index = 1;
+      if (index > totalSlides) index = totalSlides;
+      currentSlide = index;
+
+      document.querySelectorAll('.slide').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('slide-enter');
+      });
+
+      const activeEl = document.querySelector(`.slide[data-slide="${currentSlide}"]`);
+      if (activeEl) {
+        activeEl.classList.remove('hidden');
+        activeEl.classList.add('slide-enter');
+      }
+
+      document.getElementById('currentSlideNum').innerText = currentSlide;
+      document.getElementById('totalSlidesNum').innerText = totalSlides;
+      const progressPercent = (currentSlide / totalSlides) * 100;
+      document.getElementById('progressBar').style.width = progressPercent + '%';
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) showSlide(currentSlide - 1);
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) showSlide(currentSlide + 1);
+    }
+
+    // 鍵盤導航
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'Escape') {
+        const modal = document.getElementById('overviewModal');
+        if (!modal.classList.contains('hidden')) toggleOverview();
+      }
+    });
+
+    // 目錄切換
+    function toggleOverview() {
+      const modal = document.getElementById('overviewModal');
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        const grid = document.getElementById('overviewGrid');
+        grid.innerHTML = '';
+        slideTitles.forEach((title, idx) => {
+          const btn = document.createElement('button');
+          btn.className = `p-4 rounded-xl text-left border transition ${
+            (idx + 1) === currentSlide 
+              ? 'bg-blue-600/30 border-blue-500 text-white' 
+              : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800'
+          }`;
+          btn.innerHTML = `<span class="block text-xs font-bold text-slate-400 mb-1">Slide ${idx + 1}</span><span class="text-xs font-medium">${title}</span>`;
+          btn.onclick = () => {
+            showSlide(idx + 1);
+            toggleOverview();
+          };
+          grid.appendChild(btn);
+        });
+      }
+    }
+
+    // ========== 互動模擬器邏輯 (Slide 7) ==========
+    const slider = document.getElementById('linePositionSlider');
+    const simBlackLine = document.getElementById('simBlackLine');
+    const sensorLedsContainer = document.getElementById('sensorLeds');
+    const activeSensorsText = document.getElementById('activeSensorsText');
+    const decisionBadge = document.getElementById('decisionBadge');
+    const leftMotorSpeed = document.getElementById('leftMotorSpeed');
+    const rightMotorSpeed = document.getElementById('rightMotorSpeed');
+    const leftMotorBar = document.getElementById('leftMotorBar');
+    const rightMotorBar = document.getElementById('rightMotorBar');
+    const actionExplanation = document.getElementById('actionExplanation');
+
+    // 初始化 10 個感測器 DOM
+    for (let i = 1; i <= 10; i++) {
+      const div = document.createElement('div');
+      div.id = `simLed${i}`;
+      div.className = "flex flex-col items-center";
+      div.innerHTML = `
+        <span class="text-[10px] text-slate-400 mb-1">D${i}</span>
+        <div class="led-box w-full h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-xs font-bold text-emerald-300">
+          1
+        </div>
+      `;
+      sensorLedsContainer.appendChild(div);
+    }
+
+    function updateSimulator(posPercent) {
+      // 黑線寬度約佔 15% 賽道寬度
+      const lineLeft = Math.max(0, Math.min(85, posPercent - 7.5));
+      simBlackLine.style.left = lineLeft + '%';
+
+      // 計算 10 個感測點（分佈於 5% 至 95%）
+      let triggered = [];
+      for (let i = 1; i <= 10; i++) {
+        const sensorX = 5 + (i - 1) * 10; // 5, 15, 25, 35, 45, 55, 65, 75, 85, 95
+        const isBlack = (sensorX >= lineLeft && sensorX <= lineLeft + 15);
+        const ledBox = document.querySelector(`#simLed${i} .led-box`);
+        
+        if (isBlack) {
+          triggered.push(i);
+          ledBox.className = "led-box w-full h-8 rounded-lg bg-amber-500 border border-amber-300 shadow-md shadow-amber-500/40 flex items-center justify-center text-xs font-bold text-black";
+          ledBox.innerText = "0";
+        } else {
+          ledBox.className = "led-box w-full h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-xs font-bold text-emerald-300";
+          ledBox.innerText = "1";
+        }
+      }
+
+      if (triggered.length === 0) {
+        activeSensorsText.innerText = "無感測器壓線 (脫軌脫離)";
+        activeSensorsText.className = "text-rose-400 font-mono font-bold";
+        decisionBadge.innerText = "脫軌重尋模式";
+        decisionBadge.className = "px-2.5 py-0.5 rounded text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/40";
+        setMotors(15, 15, "未感應到黑線，啟動低速原地自轉尋線機制。");
+        return;
+      }
+
+      activeSensorsText.innerText = `通道 ${triggered.join(', ')} 壓黑線 (讀值 0)`;
+      activeSensorsText.className = "text-amber-400 font-mono font-bold";
+
+      const avgTrigger = triggered.reduce((a, b) => a + b, 0) / triggered.length; // 中心理想為 5.5
+
+      if (avgTrigger >= 5.0 && avgTrigger <= 6.0) {
+        // 置中直行
+        decisionBadge.innerText = "穩態直行";
+        decisionBadge.className = "px-2.5 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
+        setMotors(30, 30, "黑線位於車體正中央（D5、D6），兩輪維持基準速度 30 穩定前進。");
+      } else if (avgTrigger < 5.0) {
+        // 黑線在左側 -> 車體偏右 -> 需向左修正 (左輪減速、右輪加速)
+        const deviation = 5.5 - avgTrigger;
+        const leftSpeed = Math.max(5, Math.round(30 - deviation * 6));
+        const rightSpeed = Math.min(45, Math.round(30 + deviation * 4));
+        decisionBadge.innerText = `向左修正 (偏右度: ${deviation.toFixed(1)})`;
+        decisionBadge.className = "px-2.5 py-0.5 rounded text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/40";
+        setMotors(leftSpeed, rightSpeed, `黑線偏左（通道 ${triggered.join(',')}），右輪加速、左輪減速以向左偏轉校正。`);
+      } else {
+        // 黑線在右側 -> 車體偏左 -> 需向右修正 (右輪減速、左輪加速)
+        const deviation = avgTrigger - 5.5;
+        const leftSpeed = Math.min(45, Math.round(30 + deviation * 4));
+        const rightSpeed = Math.max(5, Math.round(30 - deviation * 6));
+        decisionBadge.innerText = `向右修正 (偏左度: ${deviation.toFixed(1)})`;
+        decisionBadge.className = "px-2.5 py-0.5 rounded text-xs font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/40";
+        setMotors(leftSpeed, rightSpeed, `黑線偏右（通道 ${triggered.join(',')}），左輪加速、右輪減速以向右偏轉校正。`);
+      }
+    }
+
+    function setMotors(left, right, expl) {
+      leftMotorSpeed.innerText = left;
+      rightMotorSpeed.innerText = right;
+      leftMotorBar.style.width = (left / 50 * 100) + '%';
+      rightMotorBar.style.width = (right / 50 * 100) + '%';
+      actionExplanation.innerText = expl;
+    }
+
+    function setScenario(val) {
+      slider.value = val;
+      updateSimulator(val);
+    }
+
+    slider.addEventListener('input', (e) => {
+      updateSimulator(parseFloat(e.target.value));
+    });
+
+    // 初始狀態
+    updateSimulator(50);
+  </script>
+</body>
+</html>

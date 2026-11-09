@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鳳鳴國中 115.11.9 科技領域公開授課與觀議課 數位成果旗艦專區</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+    body {
+      font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+    }
+    .tab-btn.active {
+      background-color: #2563eb;
+      color: #ffffff;
+      border-color: #3b82f6;
+    }
+    .glass-box {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white">
+
+  <!-- 頂部 Header -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex items-center space-x-3.5">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-blue-500/30">
+          FM
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-md font-semibold border border-blue-500/30">115學年度公開授課</span>
+            <span class="text-xs text-slate-400">南投縣立鳳鳴國中 科技領域 / 資訊科技</span>
+          </div>
+          <h1 class="text-lg md:text-xl font-bold text-white tracking-tight">
+            Matrix 機器人十線循跡感測器程式設計實戰 數位成果整合專區
+          </h1>
+        </div>
+      </div>
+      
+      <!-- 快速跳轉快捷鈕 -->
+      <div class="flex items-center flex-wrap gap-2 text-xs">
+        <a href="教案網頁式簡報.html" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold shadow-md shadow-blue-600/20 transition flex items-center space-x-1">
+          <span>🖥️ 互動教案簡報</span>
+        </a>
+        <a href="觀議課統整分析儀表板.html" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold shadow-md shadow-emerald-600/20 transition flex items-center space-x-1">
+          <span>📊 觀議課分析儀表板</span>
+        </a>
+        <a href="https://padlet.com/qianyikeji1/1151109-s0258t0m3dds4ewmigjc" target="_blank" rel="noopener" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl font-medium transition flex items-center space-x-1">
+          <span>📌 原始 Padlet 看板</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主內容區 -->
+  <main class="max-w-7xl mx-auto w-full p-4 md:p-8 flex-1 space-y-10">
+
+    <!-- 1. 英雄橫幅 (Hero Banner) 與活動資訊 -->
+    <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 p-6 md:p-10 shadow-2xl">
+      <div class="absolute -right-20 -top-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <div class="lg:col-span-8 space-y-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-full text-xs font-semibold">
+              公開授課單元
+            </span>
+            <span class="text-xs text-slate-400">115年11月9日 ｜ 國中七年級 (45分鐘)</span>
+          </div>
+
+          <h2 class="text-3xl md:text-5xl font-black text-white leading-tight">
+            循跡達人
+          </h2>
+          <h3 class="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-300">
+            Matrix 機器人 十線循跡感測器程式設計實戰
+          </h3>
+
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed max-w-3xl">
+            本專區完整整合<strong>「公開授課教案網頁簡報」</strong>、<strong>「四位觀課教師手寫紀錄統整儀表板」</strong>、以及由姚述勤老師建置之<strong>「Padlet 公開課完整看板」</strong>（含說課、觀課、議課現場照片、實作錄影、AI 輔助教材與心智圖）。全方位呈現做中學、一人一機自主探究與軟硬體除錯的科技素養實踐。
+          </p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
+            <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-xs">
+              <span class="text-slate-400 block mb-0.5">授課教師</span>
+              <span class="font-bold text-white flex items-center">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5"></span>吳昌年 老師
+              </span>
+            </div>
+            <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-xs">
+              <span class="text-slate-400 block mb-0.5">觀課教師群</span>
+              <span class="font-bold text-slate-200">林大鈞、莊嘉年</span>
+              <span class="font-bold text-slate-200 block">姚廷勤、黃俊華</span>
+            </div>
+            <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-xs">
+              <span class="text-slate-400 block mb-0.5">教學環境</span>
+              <span class="font-bold text-indigo-300">電腦教室 / 3F多功能</span>
+            </div>
+            <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-xs">
+              <span class="text-slate-400 block mb-0.5">硬體規格</span>
+              <span class="font-bold text-emerald-400">1人1機 Matrix車體</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右側海報與 QR Code 縮網址卡片 -->
+        <div class="lg:col-span-4 flex flex-col items-center">
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col items-center text-center shadow-xl w-full max-w-xs">
+            <div class="w-full h-44 rounded-xl overflow-hidden mb-3 border border-slate-800 bg-slate-900">
+              <img src="assets/image.png" alt="公開課縮網址 QR Code" class="w-full h-full object-contain p-2 hover:scale-105 transition duration-300">
+            </div>
+            <span class="text-xs text-slate-400 mb-1">公開課手機掃碼看成果</span>
+            <a href="https://bit.ly/1151109nato" target="_blank" rel="noopener" class="text-xs font-mono font-bold text-blue-400 hover:text-blue-300 underline">
+              bit.ly/1151109nato
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. 二大核心視覺化工具入口卡片 (簡報 & 儀表板) -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- 入口 1: 網頁式簡報 -->
+      <a href="教案網頁式簡報.html" class="group relative rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-blue-500 p-6 md:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+              🖥️
+            </span>
+            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/30 rounded-full text-xs font-bold">
+              10 頁完整簡報
+            </span>
+          </div>
+          <h3 class="text-xl md:text-2xl font-bold text-white group-hover:text-blue-300 transition mb-2">
+            1. 教案網頁式簡報與視覺化模擬
+          </h3>
+          <p class="text-xs md:text-sm text-slate-400 leading-relaxed mb-4">
+            整合 108 課綱素養、三維教學目標、45 分鐘課堂時間軸。核心內建<strong>「十通道循跡動態演算模擬器」</strong>，支援即時滑桿拖曳與左右馬達差速演算。
+          </p>
+          <div class="flex flex-wrap gap-2 text-[11px] text-slate-300">
+            <span class="px-2.5 py-1 bg-slate-800 rounded-lg">#動態模擬器</span>
+            <span class="px-2.5 py-1 bg-slate-800 rounded-lg">#二分法決策樹</span>
+            <span class="px-2.5 py-1 bg-slate-800 rounded-lg">#MatrixBlock積木</span>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-slate-800/80 mt-6 flex items-center justify-between text-xs font-bold text-blue-400 group-hover:text-blue-300">
+          <span>前往網頁簡報</span>
+          <span>→</span>
+        </div>
+      </a>
+
+      <!-- 入口 2: 觀議課分析儀表板 -->
+      <a href="觀議課統整分析儀表板.html" class="group relative rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500 p-6 md:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-1">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+              📊
+            </span>
+            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-bold">
+              4 師評核全收錄
+            </span>
+          </div>
+          <h3 class="text-xl md:text-2xl font-bold text-white group-hover:text-emerald-300 transition mb-2">
+            2. 觀議課統整分析與視覺化儀表板
+          </h3>
+          <p class="text-xs md:text-sm text-slate-400 leading-relaxed mb-4">
+            將<strong>林大鈞、莊嘉年、姚廷勤、黃俊華</strong> 4 位觀課教師手寫紀錄逐字電子化。具備專業發展規準六大向度 SVG 雷達圖，提煉拉窗簾防光害等課堂教學機智。
+          </p>
+          <div class="flex flex-wrap gap-2 text-[11px] text-slate-300">
+            <span class="px-2.5 py-1 bg-slate-800 rounded-lg">#SVG雷達圖</span>
+            <span class="px-2.5 py-1 bg-slate-800 rounded-lg">#拉窗簾抗光害</span>
+            <span class="px-2.5 py-1 bg-slate-800 rounded-lg">#SWOT精進方案</span>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-slate-800/80 mt-6 flex items-center justify-between text-xs font-bold text-emerald-400 group-hover:text-emerald-300">
+          <span>前往觀議課儀表板</span>
+          <span>→</span>
+        </div>
+      </a>
+
+    </section>
+
+    <!-- 3. Padlet 看板全流程整合專區 (Tab 導覽系統) -->
+    <section class="bg-slate-900/90 rounded-3xl p-6 md:p-8 border border-slate-800 shadow-xl space-y-6">
+      
+      <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-800 gap-4">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="p-1.5 bg-indigo-500/20 text-indigo-400 rounded-lg text-sm">📁</span>
+            <h2 class="text-xl font-bold text-white">Padlet 公開課全看板整合專區</h2>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">
+            完整收錄說課、觀課、議課、AI 協作、心智圖、原始教案 Word 與歷程影像全紀錄。
+          </p>
+        </div>
+
+        <!-- Tab 選項卡按鈕 -->
+        <div class="flex flex-wrap gap-2">
+          <button onclick="switchTab('flow')" id="tab-btn-flow" class="tab-btn active px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-slate-700 bg-blue-600 text-white transition">
+            📸 說課・觀課・議課 現場紀錄
+          </button>
+          <button onclick="switchTab('ai')" id="tab-btn-ai" class="tab-btn px-3.5 py-1.5 rounded-xl text-xs font-medium border border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800 transition">
+            🤖 AI 協作・心智圖與教材庫
+          </button>
+          <button onclick="switchTab('refs')" id="tab-btn-refs" class="tab-btn px-3.5 py-1.5 rounded-xl text-xs font-medium border border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800 transition">
+            📚 準備資料與歷年典範
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 1: 說課・觀課・議課 現場歷程與照片影音牆 -->
+      <div id="tab-content-flow" class="tab-pane space-y-8">
+        
+        <!-- 說課階段 -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
+              <h3 class="text-base font-bold text-white">【階段一：說課 Pre-Lesson】教學理念與觀察重點說明</h3>
+            </div>
+            <span class="text-xs text-slate-400">地點：電腦教室 / 3F</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between">
+              <img src="assets/PXL_20261109_004704186.jpg" alt="說課現場簡報" class="w-full h-48 object-cover hover:scale-105 transition duration-300">
+              <div class="p-3 text-xs text-slate-300">
+                <span class="font-bold text-white block mb-1">說課簡報講解</span>
+                吳昌年老師向觀課同儕說明單元目標、Matrix 十線感測器原理與學生既有運算思維經驗。
+              </div>
+            </div>
+
+            <div class="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between">
+              <img src="assets/IMG_0225.jpeg" alt="觀課教師聆聽說課" class="w-full h-48 object-cover hover:scale-105 transition duration-300">
+              <div class="p-3 text-xs text-slate-300">
+                <span class="font-bold text-white block mb-1">同儕教師共同備課與說課</span>
+                林大鈞、莊嘉年、姚廷勤、黃俊華等教師審閱教案設計單與觀察指標。
+              </div>
+            </div>
+
+            <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800 flex flex-col justify-between">
+              <div>
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-[11px] font-semibold mb-2 inline-block">說課影音錄影</span>
+                <h4 class="text-sm font-bold text-white mb-2">說課實況錄影檔 (28779.mp4)</h4>
+                <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                  完整收錄說課現場之理念說明、感測器安裝防光害要點以及實測賽道動線規劃。
+                </p>
+              </div>
+              <a href="https://padlet.com/qianyikeji1/1151109-s0258t0m3dds4ewmigjc/wish/4137196512" target="_blank" rel="noopener" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold text-center transition">
+                ▶️ 在 Padlet 播放說課實況錄影
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 觀課階段 -->
+        <div class="space-y-4 pt-4 border-t border-slate-800">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+              <h3 class="text-base font-bold text-white">【階段二：觀課 Observation】45 分鐘課堂實錄與師生動態</h3>
+            </div>
+            <span class="text-xs text-emerald-400 font-semibold">1 人 1 機實作 + 黑色膠帶賽道</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between">
+              <img src="assets/28819.jpg" alt="黑板長磁鐵與程式積木教學" class="w-full h-48 object-cover hover:scale-105 transition duration-300">
+              <div class="p-3 text-xs text-slate-300">
+                <span class="font-bold text-white block mb-1">黑板長磁鐵與積木邏輯拆解</span>
+                莊嘉年老師記錄：利用黑板 10 號長磁鐵具象模擬紅外線感測器壓線，引導學生思考黑白反射數值。
+              </div>
+            </div>
+
+            <div class="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between">
+              <img src="assets/IMG_0226.jpeg" alt="實地跑車測試與走動指導" class="w-full h-48 object-cover hover:scale-105 transition duration-300">
+              <div class="p-3 text-xs text-slate-300">
+                <span class="font-bold text-white block mb-1">黑色膠帶賽道實測與 Debug</span>
+                林大鈞老師記錄：學生現場實跑測試機器人，遇到不動時教師引導檢查馬達接線，並拉上窗簾抗光害。
+              </div>
+            </div>
+
+            <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800 flex flex-col justify-between">
+              <div>
+                <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded text-[11px] font-semibold mb-2 inline-block">課堂實況影片</span>
+                <h4 class="text-sm font-bold text-white mb-2">賽道實跑與同儕互助除錯</h4>
+                <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                  黃俊華老師記錄：每位學生一台機器人，表現良好認真學習；學生互相觀察行進軌跡並調整積木速度參數。
+                </p>
+              </div>
+              <div class="space-y-2">
+                <a href="https://padlet.com/qianyikeji1/1151109-s0258t0m3dds4ewmigjc/wish/4137645141" target="_blank" rel="noopener" class="w-full py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold block text-center transition">
+                  ▶️ 播放實跑錄影 1 (28823.mp4)
+                </a>
+                <a href="https://padlet.com/qianyikeji1/1151109-s0258t0m3dds4ewmigjc/wish/4137645258" target="_blank" rel="noopener" class="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-medium block text-center transition">
+                  ▶️ 播放實跑錄影 2 (28798.mp4)
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 議課階段 -->
+        <div class="space-y-4 pt-4 border-t border-slate-800">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span>
+              <h3 class="text-base font-bold text-white">【階段三：議課 Debriefing】觀課紀錄綜合座談與專業省思</h3>
+            </div>
+            <span class="text-xs text-purple-300">4 份手寫紀錄表全收錄</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between">
+              <img src="assets/IMG_8571.jpg" alt="觀課紀錄表手寫原稿" class="w-full h-48 object-cover hover:scale-105 transition duration-300">
+              <div class="p-3 text-xs text-slate-300">
+                <span class="font-bold text-white block mb-1">手寫觀察紀錄表原件</span>
+                林大鈞、莊嘉年、姚廷勤、黃俊華 4 位教師之客觀事實紀錄手稿（已全面逐字電子化收錄）。
+              </div>
+            </div>
+
+            <div class="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between">
+              <img src="assets/IMG_0238.jpeg" alt="議課回饋座談會" class="w-full h-48 object-cover hover:scale-105 transition duration-300">
+              <div class="p-3 text-xs text-slate-300">
+                <span class="font-bold text-white block mb-1">議課座談交流與專業對話</span>
+                觀課教師充分交流對學生活動投入度、時間節奏掌控與鴻海科技資源在地化之寶貴意見。
+              </div>
+            </div>
+
+            <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800 flex flex-col justify-between">
+              <div>
+                <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-[11px] font-semibold mb-2 inline-block">議課雲端資料夾</span>
+                <h4 class="text-sm font-bold text-white mb-2">Google Drive 議課手寫掃描檔案</h4>
+                <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                  即本工作區內之 `鳳鳴國中115.11.9科技子二公開觀議課資料.pdf`（共 8 頁）。
+                </p>
+              </div>
+              <div class="space-y-2">
+                <a href="觀議課統整分析儀表板.html" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold block text-center shadow transition">
+                  📊 查看手寫逐字電子化與雷達圖
+                </a>
+                <a href="https://drive.google.com/file/d/10xv7_Bdbgyj8ItFM-ktR8h50plIogMeR/view?usp=drivesdk" target="_blank" rel="noopener" class="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium block text-center transition">
+                  🔗 開啟 Google Drive 原始掃描檔
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 2: AI 協作・心智圖與教材庫 -->
+      <div id="tab-content-ai" class="tab-pane hidden space-y-6">
+        
+        <!-- 心智圖視覺化區塊 -->
+        <div class="bg-slate-950 rounded-2xl p-6 border border-slate-800">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 pb-3 border-b border-slate-800 gap-2">
+            <div>
+              <span class="px-2 py-0.5 bg-cyan-500/20 text-cyan-300 rounded text-[11px] font-semibold">Markmap 互動架構</span>
+              <h3 class="text-base font-bold text-white mt-1">Matrix 機器人十線循跡 課程心智圖 (Mindmap)</h3>
+            </div>
+            <div class="flex items-center space-x-2">
+              <a href="assets/1151108-115科技(資訊科技)公開授課教案_Matrix機器人課程心智圖.html" target="_blank" class="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold transition">
+                全螢幕展開心智圖
+              </a>
+            </div>
+          </div>
+
+          <div class="w-full h-80 rounded-xl overflow-hidden border border-slate-800 bg-slate-900 mb-3">
+            <iframe src="assets/1151108-115科技(資訊科技)公開授課教案_Matrix機器人課程心智圖.html" class="w-full h-full border-0"></iframe>
+          </div>
+          <span class="text-xs text-slate-400">💡 提示：您可直接在上方面板中縮放、拖曳並點擊節點展開/收合完整心智樹。</span>
+        </div>
+
+        <!-- AI 協作工具與下載資源 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="text-2xl mb-2">🤖</div>
+              <h4 class="text-sm font-bold text-white mb-1">ChatGPT 科技領域課程輔助</h4>
+              <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                由科技領域專屬訓練之 GPTs，輔助生成素養教案與課室活動設計。
+              </p>
+            </div>
+            <a href="https://chatgpt.com/g/g-6a035c8ac54c8191ba17c156d2e10b7d-ke-ji-ling-yu-ke-cheng-she-ji-fu-zhu-chatbot" target="_blank" rel="noopener" class="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded-lg text-xs font-semibold text-center block transition">
+              開啟 Chatbot 輔助 ↗
+            </a>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="text-2xl mb-2">📝</div>
+              <h4 class="text-sm font-bold text-white mb-1">教案 Word 完整原始檔</h4>
+              <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                包含詳細單元架構、學習表現、評量規準與教學實施步驟之 `.docx` 格式。
+              </p>
+            </div>
+            <a href="assets/115科技(資訊科技)公開授課教案_Matrix機器人十線循跡感測器程式設計實戰.docx" download class="w-full py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold text-center block transition">
+              下載教案 Word 檔 ⬇
+            </a>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="text-2xl mb-2">📑</div>
+              <h4 class="text-sm font-bold text-white mb-1">課程簡報 1：程式實戰</h4>
+              <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                十通道紅外線感測器原理、Matrix Block 積木語法與二分法演算法簡報。
+              </p>
+            </div>
+            <a href="assets/1151108-115科技(資訊科技)公開授課教案_Matrix機器人循跡機器人程式實戰.pdf" target="_blank" class="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-medium text-center block transition">
+              檢視簡報 PDF 1 ↗
+            </a>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="text-2xl mb-2">🗺️</div>
+              <h4 class="text-sm font-bold text-white mb-1">課程簡報 2：教學藍圖</h4>
+              <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                完整課堂 45 分鐘階段時間掌控、學生分組實作檢核表與評量標準。
+              </p>
+            </div>
+            <a href="assets/1151108-115科技(資訊科技)公開授課教案_Matrix機器人循跡機器人教學藍圖.pdf" target="_blank" class="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-medium text-center block transition">
+              檢視簡報 PDF 2 ↗
+            </a>
+          </div>
+
+        </div>
+
+        <!-- 本地影片展示：除錯教學與循跡模擬動畫 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+            <h4 class="text-xs font-bold text-slate-300 mb-2 flex items-center space-x-1.5">
+              <span>🎬</span>
+              <span>教學動畫：機器人脫軌怎麼辦？破解循跡除錯</span>
+            </h4>
+            <video controls class="w-full rounded-xl bg-black max-h-56">
+              <source src="assets/機器人脫軌1151108-115科技(資訊科技)公開授課教案_Matrix機器人怎麼辦？破解循跡除錯.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+            <h4 class="text-xs font-bold text-slate-300 mb-2 flex items-center space-x-1.5">
+              <span>🏎️</span>
+              <span>循跡示範：Matrix 機器人十線循跡動態演示</span>
+            </h4>
+            <video controls class="w-full rounded-xl bg-black max-h-56">
+              <source src="assets/1151108-115科技(資訊科技)公開授課教案_Matrix機器人Matrix_機器人十線循跡.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 3: 準備資料與歷年典範 -->
+      <div id="tab-content-refs" class="tab-pane hidden space-y-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- 官方教學平臺 -->
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+              <span>🏛️</span>
+              <span>官方課綱與科技教育核心平臺</span>
+            </h3>
+            
+            <a href="https://cirn.moe.edu.tw/WebFile/index.aspx?sid=1179&mid=12624" target="_blank" rel="noopener" class="p-3 bg-slate-900 hover:bg-slate-850 rounded-xl border border-slate-800 flex items-center justify-between text-xs transition block">
+              <div>
+                <span class="font-bold text-slate-200 block">教育部 CIRN 課程與教學資源整合平臺</span>
+                <span class="text-slate-500">科技領域課綱手冊、課程設計指引與教學資源。</span>
+              </div>
+              <span class="text-blue-400">↗</span>
+            </a>
+
+            <a href="https://techminicourse.mail.nknu.edu.tw/" target="_blank" rel="noopener" class="p-3 bg-slate-900 hover:bg-slate-850 rounded-xl border border-slate-800 flex items-center justify-between text-xs transition block">
+              <div>
+                <span class="font-bold text-slate-200 block">國立高雄師範大學 科技微課程平臺</span>
+                <span class="text-slate-500">提供生活科技與資訊科技跨領域微單元教材。</span>
+              </div>
+              <span class="text-blue-400">↗</span>
+            </a>
+          </div>
+
+          <!-- 鳳鳴與跨校歷年公開課典範 -->
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+            <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+              <span>🏫</span>
+              <span>歷年公開課與跨校範本典範</span>
+            </h3>
+
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <a href="https://padlet.com/t04590/1131209-7sqw17pi6fy7j90s" target="_blank" rel="noopener" class="p-3 bg-slate-900 hover:bg-slate-850 rounded-xl border border-slate-800 transition">
+                <span class="font-bold text-slate-300 block mb-0.5">113年鳳鳴國中公開課</span>
+                <span class="text-[11px] text-slate-500">Padlet 成果存檔 ↗</span>
+              </a>
+              <a href="https://padlet.com/academiciflimited/1150525-p1fngcdnq4vgming" target="_blank" rel="noopener" class="p-3 bg-slate-900 hover:bg-slate-850 rounded-xl border border-slate-800 transition">
+                <span class="font-bold text-slate-300 block mb-0.5">114年鳳鳴國中公開課</span>
+                <span class="text-[11px] text-slate-500">Padlet 成果存檔 ↗</span>
+              </a>
+              <a href="https://padlet.com/academiciflimited/1141218-pw3sfuivkdre0h85" target="_blank" rel="noopener" class="p-3 bg-slate-900 hover:bg-slate-850 rounded-xl border border-slate-800 transition">
+                <span class="font-bold text-slate-300 block mb-0.5">三光國中 公開課範本</span>
+                <span class="text-[11px] text-slate-500">科技子二公開課 ↗</span>
+              </a>
+              <a href="https://padlet.com/academiciflimited/1141210-qkkuw9gb35saseb0" target="_blank" rel="noopener" class="p-3 bg-slate-900 hover:bg-slate-850 rounded-xl border border-slate-800 transition">
+                <span class="font-bold text-slate-300 block mb-0.5">明潭國中 公開課範本</span>
+                <span class="text-[11px] text-slate-500">科技子二公開課 ↗</span>
+              </a>
+            </div>
+
+            <a href="https://padlet.com/academiciflimited/1141021-78ikvantoahd4883" target="_blank" rel="noopener" class="p-3 bg-slate-900 hover:bg-slate-850 rounded-xl border border-slate-800 flex items-center justify-between text-xs transition block">
+              <span class="font-bold text-slate-300">雙語公開課典範平臺</span>
+              <span class="text-blue-400">↗</span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500 bg-slate-950">
+    南投縣立鳳鳴國中 115 學年度 科技領域（資訊科技）公開授課與觀議課專案檔案庫 ｜ 授課教師：吳昌年 老師 ｜ 專案主編：姚述勤 老師
+  </footer>
+
+  <script>
+    function switchTab(tabKey) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.className = "tab-btn px-3.5 py-1.5 rounded-xl text-xs font-medium border border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800 transition";
+      });
+
+      const pane = document.getElementById(`tab-content-${tabKey}`);
+      if (pane) pane.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`tab-btn-${tabKey}`);
+      if (activeBtn) {
+        activeBtn.className = "tab-btn active px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-slate-700 bg-blue-600 text-white transition";
+      }
+    }
+  </script>
+</body>
+</html>

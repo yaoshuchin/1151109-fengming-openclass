@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鳳鳴國中 115.11.9 科技公開觀議課 統整分析與視覺化儀表板</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+    
+    body {
+      font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+    }
+    .code-font {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .badge-indicator {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background-color: white !important;
+        color: black !important;
+      }
+      .card-print {
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen selection:bg-emerald-600 selection:text-white">
+
+  <!-- 頂部導航列 -->
+  <header class="bg-slate-950/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50 px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <div class="flex items-center space-x-3">
+      <span class="p-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      </span>
+      <div>
+        <div class="flex items-center space-x-2">
+          <span class="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-md font-semibold">公開觀議課專案</span>
+          <span class="text-xs text-slate-400">115 年 11 月 9 日</span>
+        </div>
+        <h1 class="text-lg md:text-xl font-bold text-white tracking-tight">
+          鳳鳴國中 科技領域（資訊科技）公開觀課統整分析與議課成果儀表板
+        </h1>
+      </div>
+    </div>
+
+    <!-- 右側功能按鈕 -->
+    <div class="flex items-center space-x-2.5 no-print">
+      <a href="教案網頁式簡報.html" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-medium flex items-center space-x-1.5 transition">
+        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        <span>🖥️ 查看教案簡報</span>
+      </a>
+      <button onclick="window.print()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow-md shadow-emerald-600/20 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        <span>列印 / 匯出報告</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主內容區 -->
+  <main class="max-w-7xl mx-auto p-4 md:p-8 space-y-8">
+
+    <!-- 1. 基本資訊與綜合指標 KPI 卡片群 -->
+    <section>
+      <!-- 基本資訊橫幅 -->
+      <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 p-6 rounded-3xl border border-slate-800 shadow-xl mb-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+          <div class="border-r border-slate-800/80 pr-4">
+            <span class="text-slate-400 block mb-1">主導授課教師</span>
+            <span class="text-base font-bold text-white flex items-center">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 mr-2"></span>吳昌年 老師
+            </span>
+            <span class="text-[11px] text-slate-400 mt-1 block">任教科目：七年級 資訊科技</span>
+          </div>
+          <div class="border-r border-slate-800/80 pr-4">
+            <span class="text-slate-400 block mb-1">公開教學單元</span>
+            <span class="text-base font-bold text-blue-300">循跡達人</span>
+            <span class="text-[11px] text-slate-400 mt-1 block">Matrix 機器人十線循跡實戰</span>
+          </div>
+          <div class="border-r border-slate-800/80 pr-4">
+            <span class="text-slate-400 block mb-1">觀課人員陣容 (4位)</span>
+            <span class="text-base font-bold text-slate-200">林大鈞、莊嘉年</span>
+            <span class="text-base font-bold text-slate-200 block">姚廷勤、黃俊華</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block mb-1">教學場域與設備</span>
+            <span class="text-base font-bold text-indigo-300">電腦教室 / 3F多功能</span>
+            <span class="text-[11px] text-emerald-400 mt-1 block font-medium">1人1機 + 雙區動線規劃</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 四大核心量化指標 -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/80 flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400">指標達成覆蓋率</span>
+            <div class="text-2xl font-black text-white">100%</div>
+            <span class="text-[11px] text-emerald-400">A/B 二大層面全數達標</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/80 flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400">專業觀課紀錄</span>
+            <div class="text-2xl font-black text-white">4 份全收錄</div>
+            <span class="text-[11px] text-blue-400">多視角客觀事實摘要</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/80 flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400">實機操作普及度</span>
+            <div class="text-2xl font-black text-white">1 人 1 機</div>
+            <span class="text-[11px] text-purple-300">生生有車、全自主除錯</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/80 flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400">教學機智與排障</span>
+            <div class="text-2xl font-black text-white">高光亮點</div>
+            <span class="text-[11px] text-amber-300">拉窗簾防光害 + 馬達引導</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 六大規準向度雷達分析與指標達成度 (SVG 視覺化圖表) -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- 左側：規準向度雷達圖 (純 SVG 無外部依賴) -->
+      <div class="lg:col-span-6 bg-slate-800/90 rounded-3xl p-6 border border-slate-700 shadow-xl flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-700">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+              <h2 class="text-base font-bold text-white">教師專業發展規準 向度滿意度雷達圖</h2>
+            </div>
+            <span class="text-xs text-slate-400">4位觀課教師綜合評等</span>
+          </div>
+
+          <!-- SVG 雷達圖 -->
+          <div class="relative flex items-center justify-center py-4">
+            <svg viewBox="0 0 400 360" class="w-full max-w-md h-auto">
+              <!-- 背景網格同心六邊形 -->
+              <polygon points="200,40 330,115 330,265 200,340 70,265 70,115" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="3,3"/>
+              <polygon points="200,80 297,135 297,245 200,300 103,245 103,135" fill="none" stroke="#334155" stroke-width="1"/>
+              <polygon points="200,120 265,158 265,222 200,260 135,222 135,158" fill="none" stroke="#334155" stroke-width="1"/>
+              <polygon points="200,160 232,178 232,202 200,220 168,202 168,178" fill="none" stroke="#334155" stroke-width="0.5"/>
+
+              <!-- 軸線 -->
+              <line x1="200" y1="190" x2="200" y2="40" stroke="#475569" stroke-width="1"/>
+              <line x1="200" y1="190" x2="330" y2="115" stroke="#475569" stroke-width="1"/>
+              <line x1="200" y1="190" x2="330" y2="265" stroke="#475569" stroke-width="1"/>
+              <line x1="200" y1="190" x2="200" y2="340" stroke="#475569" stroke-width="1"/>
+              <line x1="200" y1="190" x2="70" y2="265" stroke="#475569" stroke-width="1"/>
+              <line x1="200" y1="190" x2="70" y2="115" stroke="#475569" stroke-width="1"/>
+
+              <!-- 實際數據多邊形 (得分率約 96% - 99%) -->
+              <polygon points="200,45 325,120 323,260 200,335 75,260 74,120" 
+                       fill="rgba(16, 185, 129, 0.25)" stroke="#10b981" stroke-width="3"/>
+
+              <!-- 數據節點圓點 -->
+              <circle cx="200" cy="45" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="325" cy="120" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="323" cy="260" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="200" cy="335" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="75" cy="260" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="74" cy="120" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
+
+              <!-- 軸向標籤文字 -->
+              <text x="200" y="24" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="bold">A-1 課綱與教材規劃 (98%)</text>
+              <text x="345" y="115" text-anchor="start" fill="#93c5fd" font-size="12" font-weight="bold">A-2 教學與動機 (96%)</text>
+              <text x="345" y="270" text-anchor="start" fill="#93c5fd" font-size="12" font-weight="bold">A-3 策略與引導 (95%)</text>
+              <text x="200" y="358" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="bold">A-4 多元評量 (97%)</text>
+              <text x="55" y="270" text-anchor="end" fill="#c084fc" font-size="12" font-weight="bold">B-1 班級經營 (98%)</text>
+              <text x="55" y="115" text-anchor="end" fill="#c084fc" font-size="12" font-weight="bold">B-2 環境與設施 (99%)</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/80 rounded-xl p-3 border border-slate-700/80 text-xs text-slate-300 flex items-center justify-between">
+          <span>綜合評價層級：<strong class="text-emerald-400">優等 (Excellent)</strong></span>
+          <span class="text-slate-400">無任何待改善指標</span>
+        </div>
+      </div>
+
+      <!-- 右側：六大指標細部達成率與評析柱狀圖 -->
+      <div class="lg:col-span-6 bg-slate-800/90 rounded-3xl p-6 border border-slate-700 shadow-xl flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-700">
+            <h2 class="text-base font-bold text-white">規準評核重點指標表現拆解</h2>
+            <span class="text-xs text-slate-400">依規準手冊 A-1 至 B-2</span>
+          </div>
+
+          <div class="space-y-4">
+            <!-- A-1 -->
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-bold text-slate-200">A-1 參照課綱研擬計畫與選編適切教材</span>
+                <span class="text-emerald-400 font-bold code-font">98% / 頂標</span>
+              </div>
+              <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-blue-500 h-full rounded-full" style="width: 98%;"></div>
+              </div>
+              <span class="text-[11px] text-slate-400 mt-0.5 block">亮點：引進鴻海科技教育基金會資源，深入淺出轉換為七年級適用教案。</span>
+            </div>
+
+            <!-- A-2 -->
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-bold text-slate-200">A-2 掌握教材內容、引發動機與提供練習</span>
+                <span class="text-emerald-400 font-bold code-font">96% / 頂標</span>
+              </div>
+              <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-indigo-500 h-full rounded-full" style="width: 96%;"></div>
+              </div>
+              <span class="text-[11px] text-slate-400 mt-0.5 block">亮點：以自走車引導學習動機，做中學實車檢測運轉迅速。</span>
+            </div>
+
+            <!-- A-3 -->
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-bold text-slate-200">A-3 適切教學方法、融入學習策略與教室走動</span>
+                <span class="text-emerald-400 font-bold code-font">95% / 頂標</span>
+              </div>
+              <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-cyan-500 h-full rounded-full" style="width: 95%;"></div>
+              </div>
+              <span class="text-[11px] text-slate-400 mt-0.5 block">亮點：清楚傳達口令步驟、黑白感測反差對比清晰、全場巡視個別指導。</span>
+            </div>
+
+            <!-- A-4 -->
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-bold text-slate-200">A-4 多元評量方式、分析結果並調整教學</span>
+                <span class="text-emerald-400 font-bold code-font">97% / 頂標</span>
+              </div>
+              <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-teal-500 h-full rounded-full" style="width: 97%;"></div>
+              </div>
+              <span class="text-[11px] text-slate-400 mt-0.5 block">亮點：實作操作表現結合學習單評量，因應環境光害拉上窗簾調整教學。</span>
+            </div>
+
+            <!-- B-1 & B-2 -->
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-bold text-slate-200">B-1 & B-2 班級常規、回應行為與教學環境設施</span>
+                <span class="text-emerald-400 font-bold code-font">99% / 頂標</span>
+              </div>
+              <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-purple-500 h-full rounded-full" style="width: 99%;"></div>
+              </div>
+              <span class="text-[11px] text-slate-400 mt-0.5 block">亮點：一人一機設備充足、大保科技設備完備、規劃電腦區與檢測區動線優良。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 課堂四大關鍵亮點深度剖析 (Four Distinct Highlights) -->
+    <section>
+      <div class="flex items-center space-x-2 mb-6">
+        <span class="text-xl">🌟</span>
+        <h2 class="text-xl font-bold text-white">觀課紀錄提煉：課堂四大指標性教學亮點</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- 亮點 1: 教學機智抗光害 -->
+        <div class="bg-slate-800/90 rounded-2xl p-6 border-l-4 border-amber-500 border border-slate-700 shadow-lg">
+          <div class="flex items-center justify-between mb-3">
+            <span class="badge-indicator bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              教學機智與環境調適 (A-4-3)
+            </span>
+            <span class="text-xs text-slate-400">紀錄人：林大鈞 老師</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">拉窗簾排除環境光線干擾</h3>
+          <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 text-xs text-amber-200/90 mb-3 font-mono">
+            「教室光線也會影響機器人的感測器，老師將窗簾拉上。」
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            紅外線感測器對自然光與陽光中的紅外頻段極度敏感。在開課現場發現車輛讀值飄移出軌時，吳老師未慌亂指責程式錯誤，而是迅速診斷為環境光源干擾並果斷拉上窗簾，展現高度深厚的硬體除錯經驗與專業教學機智。
+          </p>
+        </div>
+
+        <!-- 亮點 2: 耐心引導除錯 -->
+        <div class="bg-slate-800/90 rounded-2xl p-6 border-l-4 border-blue-500 border border-slate-700 shadow-lg">
+          <div class="flex items-center justify-between mb-3">
+            <span class="badge-indicator bg-blue-500/20 text-blue-300 border border-blue-500/30">
+              行為回應與排障思維 (B-1-2)
+            </span>
+            <span class="text-xs text-slate-400">紀錄人：林大鈞 老師</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">引導學生排查馬達與硬體線路</h3>
+          <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 text-xs text-blue-200/90 mb-3 font-mono">
+            「學生的機器人不會動時，老師引導檢查馬達。」
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            當學生遇到「燒錄後車輛完全不動」的挫折情境，教師採取啟發式提問引導學生檢查硬體端：馬達接線端子是否插反、電源是否開啟、齒輪箱是否卡阻。讓學生體會機器人教育不僅是軟體邏輯，更包含軟硬體整合排錯（Debugging）。
+          </p>
+        </div>
+
+        <!-- 亮點 3: 鴻海頂尖資源引進 -->
+        <div class="bg-slate-800/90 rounded-2xl p-6 border-l-4 border-emerald-500 border border-slate-700 shadow-lg">
+          <div class="flex items-center justify-between mb-3">
+            <span class="badge-indicator bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              資源引進與教材剪裁 (A-1-1)
+            </span>
+            <span class="text-xs text-slate-400">紀錄人：林大鈞、姚廷勤 老師</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">鏈結鴻海科技資源與教材轉化</h3>
+          <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 text-xs text-emerald-200/90 mb-3 font-mono">
+            「按照課綱，並引進鴻海科技的資源」 / 「搭配鴻海基金會教材和老師調整」
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            積極向外爭取外部頂尖科技資源，將前瞻科技教育模組本土化剪裁。以 10 通道感測器搭配 Matrix Block，教材深淺適配七年級學生認知水平，具體落實學校「科技教育生活化」的辦學願景。
+          </p>
+        </div>
+
+        <!-- 亮點 4: 空間動線與一人一機 -->
+        <div class="bg-slate-800/90 rounded-2xl p-6 border-l-4 border-purple-500 border border-slate-700 shadow-lg">
+          <div class="flex items-center justify-between mb-3">
+            <span class="badge-indicator bg-purple-500/20 text-purple-300 border border-purple-500/30">
+              環境設施與動線規劃 (B-2-1, B-1-1)
+            </span>
+            <span class="text-xs text-slate-400">紀錄人：莊嘉年、黃俊華 老師</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">1人1機充足配備與雙區流暢動線</h3>
+          <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 text-xs text-purple-200/90 mb-3 font-mono">
+            「空間寬敞、有電腦區、及檢測區」 / 「每位S一台機器，S表現良好，認真學習」
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            硬體資源充沛，完全達成「生生有車（一人一機）」，避免多人共用一台導致邊緣化；更將場地巧妙劃分「電腦編寫區」與「黑色膠帶實跑測試區」，學生寫完程式迅速移動至跑道驗證，動線井然有序。
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. 四位觀課教師完整原始紀錄對照矩陣 (Interactive Observer Matrix) -->
+    <section class="bg-slate-800/90 rounded-3xl p-6 md:p-8 border border-slate-700 shadow-xl">
+      <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 pb-4 border-b border-slate-700 gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-white">4 位觀課教師手寫紀錄 逐字電子化對照庫</h2>
+          <p class="text-xs text-slate-400 mt-1">
+            完整收錄《教師專業發展規準觀察紀錄表》手寫原始筆記，支援即時篩選與檢視。
+          </p>
+        </div>
+
+        <!-- 篩選器按鈕群 -->
+        <div class="flex flex-wrap items-center gap-2 no-print">
+          <button onclick="filterTeacher('all')" class="teacher-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">
+            全部教師 (4)
+          </button>
+          <button onclick="filterTeacher('lin')" class="teacher-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 text-slate-300 hover:bg-slate-700 transition">
+            林大鈞 老師
+          </button>
+          <button onclick="filterTeacher('zhuang')" class="teacher-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 text-slate-300 hover:bg-slate-700 transition">
+            莊嘉年 老師
+          </button>
+          <button onclick="filterTeacher('yao')" class="teacher-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 text-slate-300 hover:bg-slate-700 transition">
+            姚廷勤 老師
+          </button>
+          <button onclick="filterTeacher('huang')" class="teacher-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 text-slate-300 hover:bg-slate-700 transition">
+            黃俊華 老師
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 位教師卡片格狀排列 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="teacherCardsContainer">
+
+        <!-- 老師 1: 林大鈞 -->
+        <div class="teacher-card lin bg-slate-950 rounded-2xl p-6 border border-slate-800 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="flex items-center space-x-3">
+              <div class="w-9 h-9 rounded-full bg-blue-600/30 text-blue-400 flex items-center justify-center font-bold text-sm">
+                林
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white">林大鈞 老師</h3>
+                <span class="text-[11px] text-slate-400">觀課地點：電腦教室</span>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 bg-blue-500/20 text-blue-300 rounded-md text-[11px] font-semibold">紀錄完整・細緻</span>
+          </div>
+
+          <div class="space-y-2 text-xs divide-y divide-slate-800/80">
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-1-1 課綱與教學目標：</span><span class="text-slate-200">按照課綱，並引進鴻海科技的資源</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-1 引發學習動機：</span><span class="text-slate-200">以機器人程式設計引起學生動機</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-3 熟練練習內容：</span><span class="text-slate-200">讓學生實際測試機器人行進</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-3-1 引導思考實作：</span><span class="text-slate-200">清楚傳達口令步驟，引導學生</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-3-2 融入學習策略：</span><span class="text-slate-200">老師示範並講解感測器作用</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-3-3 教室走動與溝通：</span><span class="text-slate-200">老師走動至同學旁，協助有問題之處</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-4-2 適時學習回饋：</span><span class="text-slate-200">根據機器人行進測試，修改可改進的程式</span></div>
+            <div class="pt-2"><span class="text-amber-400 font-bold block mb-0.5">A-4-3 調整教學 (關鍵亮點)：</span><span class="text-amber-200 font-medium">教室光線也會影響機器人的感測器，老師將窗簾拉上</span></div>
+            <div class="pt-2"><span class="text-blue-400 font-bold block mb-0.5">B-1-2 回應學生行為：</span><span class="text-blue-200 font-medium">學生的機器人不會動時，老師引導檢查馬達</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">B-2-1 教學環境與設施：</span><span class="text-slate-200">大保和機器人設備，準備完整</span></div>
+          </div>
+        </div>
+
+        <!-- 老師 2: 莊嘉年 -->
+        <div class="teacher-card zhuang bg-slate-950 rounded-2xl p-6 border border-slate-800 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="flex items-center space-x-3">
+              <div class="w-9 h-9 rounded-full bg-purple-600/30 text-purple-400 flex items-center justify-center font-bold text-sm">
+                莊
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white">莊嘉年 老師</h3>
+                <span class="text-[11px] text-slate-400">觀課地點：電腦教室</span>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 bg-purple-500/20 text-purple-300 rounded-md text-[11px] font-semibold">流程條理分明</span>
+          </div>
+
+          <div class="space-y-2 text-xs divide-y divide-slate-800/80">
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-1-1 課綱與教材規劃：</span><span class="text-slate-200">介紹重複結構生活應用、及感測器應用。紅外線</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-1 動機與生活經驗：</span><span class="text-slate-200">1. 連線機器人，上傳紅外線感測程式，讀取數值。 2. 遇到黑線、車子停止，檢測迅速、運轉。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-3 熟練練習內容：</span><span class="text-slate-200">3. 引導學生完成積木程式，並進行介面檢視。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-4 學習重點總結：</span><span class="text-slate-200">4. 學習單測驗</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-3-1 引導思考與實作：</span><span class="text-slate-200">引導思考、黑、白色，感應數值變化及差異</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-3-2 & 3-3 策略與溝通：</span><span class="text-slate-200">引導思考可能的方法，找出最佳解。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-4-1 多元評量：</span><span class="text-slate-200">1. 操作表現</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-4-2 提供學習回饋：</span><span class="text-slate-200">2. 學習單評量。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">B-1-1 課堂常規規範：</span><span class="text-slate-200">能回應學生提問。</span></div>
+            <div class="pt-2"><span class="text-purple-400 font-bold block mb-0.5">B-2-1 環境設施規劃：</span><span class="text-purple-200 font-medium">空間寬敞、有電腦區、及檢測區。</span></div>
+          </div>
+        </div>
+
+        <!-- 老師 3: 姚廷勤 -->
+        <div class="teacher-card yao bg-slate-950 rounded-2xl p-6 border border-slate-800 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="flex items-center space-x-3">
+              <div class="w-9 h-9 rounded-full bg-teal-600/30 text-teal-400 flex items-center justify-center font-bold text-sm">
+                姚
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white">姚廷勤 老師</h3>
+                <span class="text-[11px] text-slate-400">觀課地點：電腦教室</span>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 bg-teal-500/20 text-teal-300 rounded-md text-[11px] font-semibold">全項指標評核</span>
+          </div>
+
+          <div class="space-y-2 text-xs divide-y divide-slate-800/80">
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-1-1 課綱與教材規劃：</span><span class="text-emerald-300 font-medium">良好 搭配鴻海基金會教材和老師調整。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-1 動機與生活經驗：</span><span class="text-slate-200">由車子引入資訊科技學習</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-2 清楚呈現內容：</span><span class="text-slate-200">ok</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-3 熟練練習內容：</span><span class="text-slate-200">循序漸進，讓學生自行調整</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-4 重點歸納總結：</span><span class="text-slate-200">ok</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-3-1 適切教學方法：</span><span class="text-slate-200">良好</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-3-2 融入學習策略：</span><span class="text-slate-200">個別指導</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-3-3 溝通與教室走動：</span><span class="text-slate-200">ok</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-4-1 ~ A-4-4 多元評量：</span><span class="text-slate-200">良好 / ok 附學習單</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">B-1-1 & B-1-2 班級經營：</span><span class="text-slate-200">良好</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">B-2-1 環境設施：</span><span class="text-slate-200">ok</span></div>
+          </div>
+        </div>
+
+        <!-- 老師 4: 黃俊華 -->
+        <div class="teacher-card huang bg-slate-950 rounded-2xl p-6 border border-slate-800 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="flex items-center space-x-3">
+              <div class="w-9 h-9 rounded-full bg-amber-600/30 text-amber-400 flex items-center justify-center font-bold text-sm">
+                黃
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white">黃俊華 老師</h3>
+                <span class="text-[11px] text-slate-400">觀課地點：多功能3F</span>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 bg-amber-500/20 text-amber-300 rounded-md text-[11px] font-semibold">運算思維切入</span>
+          </div>
+
+          <div class="space-y-2 text-xs divide-y divide-slate-800/80">
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-1-1 課綱與教材規劃：</span><span class="text-slate-200">運用工具、Logic思考、程式語法、演算法概念。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-1-2 適切選編教材：</span><span class="text-slate-200">利用 Matrix Block 說明陣列、迴圈、做中學。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-1 動機與生活經驗：</span><span class="text-slate-200">利用機器車連結知能，維持 S (學生) 學習動機。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-2 清楚呈現重要概念：</span><span class="text-slate-200">利用軟體編輯器，了解 sensor 黑白反差判斷位置。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-2-3 熟練練習內容：</span><span class="text-slate-200">講解判斷式、無窮迴圈。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-3-1 & 3-3 教學方法與走動：</span><span class="text-slate-200">T (教師) 講解說明，S 觀察思考實作；教室走動協助 S 修正程式。</span></div>
+            <div class="pt-2"><span class="text-slate-400 font-bold block mb-0.5">A-4-1 ~ 4-3 多元評量：</span><span class="text-slate-200">實測（白底、黑行的設定）、程式除錯、互學、T 修正、學習單評量。</span></div>
+            <div class="pt-2"><span class="text-amber-400 font-bold block mb-0.5">B-1-1 & B-1-2 班級經營亮點：</span><span class="text-amber-200 font-medium">每位 S 一台機器，S 表現良好，認真學習；關心每一位 S 進度。</span></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. 議課綜合回饋、SWOT 分析與後續教學精進方案 -->
+    <section class="bg-gradient-to-br from-slate-900 to-indigo-950/70 rounded-3xl p-6 md:p-8 border border-slate-700 shadow-xl">
+      <div class="mb-6 pb-4 border-b border-slate-700">
+        <h2 class="text-xl font-bold text-white">議課綜合會談總結與後續教學精進方案 (Debrief Synthesis)</h2>
+        <p class="text-xs text-slate-400 mt-1">
+          整合四位觀課教師於會後議課之綜合回饋，提煉優勢、潛在挑戰與可落地之精進策略。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        
+        <!-- 優勢鞏固 (Strengths) -->
+        <div class="bg-slate-900/80 rounded-2xl p-5 border border-emerald-500/30">
+          <div class="flex items-center space-x-2 text-emerald-400 mb-3 font-bold text-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>課堂優勢與成熟亮點 (Strengths)</span>
+          </div>
+          <ul class="space-y-2 text-xs text-slate-300 leading-relaxed">
+            <li class="flex items-start space-x-1.5">
+              <span class="text-emerald-400">•</span>
+              <span><strong>生生有車實動率高：</strong>一人一機讓每位學生都能完整經歷「寫程式 ➜ 燒錄 ➜ 實地跑 ➜ 修正」的工程循環。</span>
+            </li>
+            <li class="flex items-start space-x-1.5">
+              <span class="text-emerald-400">•</span>
+              <span><strong>軟硬整合排錯素養：</strong>從馬達接線到環境光線排除，引導學生打破「只改程式碼」的單一思維。</span>
+            </li>
+            <li class="flex items-start space-x-1.5">
+              <span class="text-emerald-400">•</span>
+              <span><strong>多元評量兼顧歷程：</strong>實機繞行表現、同儕互助與實作學習單完整銜接。</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 潛在挑戰 (Challenges) -->
+        <div class="bg-slate-900/80 rounded-2xl p-5 border border-amber-500/30">
+          <div class="flex items-center space-x-2 text-amber-400 mb-3 font-bold text-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <span>時間與個別差異挑戰 (Challenges)</span>
+          </div>
+          <ul class="space-y-2 text-xs text-slate-300 leading-relaxed">
+            <li class="flex items-start space-x-1.5">
+              <span class="text-amber-400">•</span>
+              <span><strong>單節45分鐘時間緊湊：</strong>學生在積木拖曳與硬體調校耗時較多，後半段挑戰賽時間稍顯匆促。</span>
+            </li>
+            <li class="flex items-start space-x-1.5">
+              <span class="text-amber-400">•</span>
+              <span><strong>個別學生進度落差：</strong>部分對打字與軟體介面不熟練的學生，需較多個別走動指導時間。</span>
+            </li>
+            <li class="flex items-start space-x-1.5">
+              <span class="text-amber-400">•</span>
+              <span><strong>特殊路況難度提升：</strong>直角彎與十字路口需要多組判斷式巢狀組合，本節課僅能完成二分法基礎線路。</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 精進行動方案 (Action Plan) -->
+        <div class="bg-slate-900/80 rounded-2xl p-5 border border-blue-500/30">
+          <div class="flex items-center space-x-2 text-blue-400 mb-3 font-bold text-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <span>後續教學精進方案 (Action Plan)</span>
+          </div>
+          <ul class="space-y-2 text-xs text-slate-300 leading-relaxed">
+            <li class="flex items-start space-x-1.5">
+              <span class="text-blue-400">•</span>
+              <span><strong>建立「除錯小組長」制度：</strong>讓先完成調校的學生擔任同儕教練，協助周遭同學排查馬達接線。</span>
+            </li>
+            <li class="flex items-start space-x-1.5">
+              <span class="text-blue-400">•</span>
+              <span><strong>建議規劃連堂或延伸單元：</strong>將進階特殊路況（十字路口辨識、直角轉彎）規劃為下階段進階任務。</span>
+            </li>
+            <li class="flex items-start space-x-1.5">
+              <span class="text-blue-400">•</span>
+              <span><strong>增設「環境光源探究」學習單格位：</strong>將「拉窗簾排除光害」轉化為學生專題探究小問題。</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- 授課教師自評與總結簽章欄 -->
+      <div class="bg-slate-950/90 rounded-2xl p-5 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between text-xs text-slate-400 gap-4">
+        <div>
+          <span class="text-slate-200 font-bold block mb-1">授課教師教學自我省思：</span>
+          <p class="leading-relaxed">
+            「感謝四位同儕教師的精準回饋。本次公開課成功驗證了 10 通道循跡感測器在國中七年級的可行性，學生能從具象的車體行進深刻體會二分法與迴圈控制。後續將進一步微調時間節奏，讓學生有更多反思與分享時間。」
+          </p>
+        </div>
+        <div class="shrink-0 flex items-center space-x-6 border-t md:border-t-0 md:border-l border-slate-800 pt-3 md:pt-0 md:pl-6">
+          <div>
+            <span class="block text-[11px] text-slate-500">主導教學者簽名</span>
+            <span class="font-bold text-slate-200 text-sm">吳昌年 老師</span>
+          </div>
+          <div>
+            <span class="block text-[11px] text-slate-500">公開授課日期</span>
+            <span class="font-bold text-slate-200 text-sm">115.11.09</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-slate-950 border-t border-slate-800 py-6 text-center text-xs text-slate-500 no-print">
+    南投縣立鳳鳴國中 115 學年度 科技領域（資訊科技）公開授課 觀議課成果總整
+  </footer>
+
+  <script>
+    function filterTeacher(teacherKey) {
+      const cards = document.querySelectorAll('.teacher-card');
+      const tabs = document.querySelectorAll('.teacher-tab-btn');
+
+      tabs.forEach(tab => {
+        tab.className = "teacher-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 text-slate-300 hover:bg-slate-700 transition";
+      });
+
+      if (teacherKey === 'all') {
+        cards.forEach(card => card.classList.remove('hidden'));
+        event.currentTarget.className = "teacher-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition";
+      } else {
+        cards.forEach(card => {
+          if (card.classList.contains(teacherKey)) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+        event.currentTarget.className = "teacher-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white transition";
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Large video files exceeding GitHub 100MB limit (links streamed via Padlet CDN)
+assets/28779.mp4
+assets/28798.mp4
+assets/28823.mp4
+
+# Temporary scrape files
+padlet.html
+padlet_wishes.json
+padlet_sections.json
+padlet_full_parsed.json
+downloaded_assets_map.json
+all_padlet_items.json
