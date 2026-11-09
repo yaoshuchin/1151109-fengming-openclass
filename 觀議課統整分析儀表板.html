@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" data-font-size="medium">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,7 @@
     
     body {
       font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
     .code-font {
       font-family: 'JetBrains Mono', monospace;
@@ -22,26 +23,179 @@
       font-size: 0.75rem;
       font-weight: 600;
     }
+
+    /* ========== 字型大小定義 ========== */
+    html[data-font-size="small"] {
+      font-size: 14px;
+    }
+    html[data-font-size="medium"] {
+      font-size: 16px;
+    }
+    html[data-font-size="large"] {
+      font-size: 18.5px;
+    }
+
+    /* ========== 風格佈景主題 ========== */
+    /* 1. 深色 Dark */
+    body.theme-dark {
+      background-color: #020617;
+      color: #f8fafc;
+    }
+
+    /* 2. 淺色 Light */
+    body.theme-light {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+    body.theme-light .top-toolbar,
+    body.theme-light header {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: #e2e8f0 !important;
+    }
+    body.theme-light .bg-slate-900,
+    body.theme-light .bg-slate-900\/90,
+    body.theme-light .bg-slate-900\/80,
+    body.theme-light .bg-slate-800,
+    body.theme-light .bg-slate-800\/90,
+    body.theme-light .bg-slate-800\/80 {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      color: #0f172a !important;
+      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+    }
+    body.theme-light .bg-slate-950,
+    body.theme-light .bg-slate-950\/90,
+    body.theme-light .bg-slate-950\/80 {
+      background-color: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    body.theme-light .border-slate-800,
+    body.theme-light .border-slate-700 {
+      border-color: #e2e8f0 !important;
+    }
+    body.theme-light .text-white {
+      color: #0f172a !important;
+    }
+    body.theme-light .text-slate-100,
+    body.theme-light .text-slate-200,
+    body.theme-light .text-slate-300 {
+      color: #1e293b !important;
+    }
+    body.theme-light .text-slate-400,
+    body.theme-light .text-slate-500 {
+      color: #475569 !important;
+    }
+    body.theme-light footer {
+      background-color: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+      color: #64748b !important;
+    }
+
+    /* 3. 淡藍 Soft Blue */
+    body.theme-softblue {
+      background-color: #f0f7ff !important;
+      color: #0c4a6e !important;
+    }
+    body.theme-softblue .top-toolbar,
+    body.theme-softblue header {
+      background-color: rgba(240, 247, 255, 0.95) !important;
+      border-color: #bae6fd !important;
+    }
+    body.theme-softblue .bg-slate-900,
+    body.theme-softblue .bg-slate-900\/90,
+    body.theme-softblue .bg-slate-900\/80,
+    body.theme-softblue .bg-slate-800,
+    body.theme-softblue .bg-slate-800\/90,
+    body.theme-softblue .bg-slate-800\/80 {
+      background-color: #ffffff !important;
+      border-color: #bae6fd !important;
+      color: #0c4a6e !important;
+      box-shadow: 0 4px 14px rgba(186, 230, 253, 0.35) !important;
+    }
+    body.theme-softblue .bg-slate-950,
+    body.theme-softblue .bg-slate-950\/90,
+    body.theme-softblue .bg-slate-950\/80 {
+      background-color: #e0f2fe !important;
+      border-color: #bae6fd !important;
+      color: #0369a1 !important;
+    }
+    body.theme-softblue .border-slate-800,
+    body.theme-softblue .border-slate-700 {
+      border-color: #bae6fd !important;
+    }
+    body.theme-softblue .text-white {
+      color: #0c4a6e !important;
+    }
+    body.theme-softblue .text-slate-100,
+    body.theme-softblue .text-slate-200,
+    body.theme-softblue .text-slate-300 {
+      color: #0369a1 !important;
+    }
+    body.theme-softblue .text-slate-400,
+    body.theme-softblue .text-slate-500 {
+      color: #0284c7 !important;
+    }
+    body.theme-softblue footer {
+      background-color: #e0f2fe !important;
+      border-color: #bae6fd !important;
+      color: #0369a1 !important;
+    }
+
     @media print {
-      .no-print {
+      .no-print, .top-toolbar {
         display: none !important;
       }
       body {
         background-color: white !important;
         color: black !important;
       }
-      .card-print {
-        border: 1px solid #cbd5e1 !important;
-        box-shadow: none !important;
-        break-inside: avoid;
-      }
     }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen selection:bg-emerald-600 selection:text-white">
+<body class="theme-dark bg-slate-900 text-slate-100 min-h-screen selection:bg-emerald-600 selection:text-white">
+
+  <!-- ★ 最上方標籤控制列：字型 (大/中/小) 與 風格 (淺色/深色/淡藍) ★ -->
+  <div class="top-toolbar bg-slate-950/95 border-b border-slate-800 px-6 py-2.5 text-xs flex flex-wrap items-center justify-between gap-3 sticky top-0 z-[60] backdrop-blur shadow-sm no-print">
+    <div class="flex flex-wrap items-center gap-4 sm:gap-6">
+      
+      <!-- 字型選擇標籤 -->
+      <div class="flex items-center space-x-2">
+        <span class="font-bold text-slate-300 flex items-center space-x-1">
+          <span>🔤</span>
+          <span>字型：</span>
+        </span>
+        <div class="inline-flex rounded-lg bg-slate-900 border border-slate-700 p-0.5">
+          <button onclick="setFontSize('small')" id="btn-font-small" class="px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition">小</button>
+          <button onclick="setFontSize('medium')" id="btn-font-medium" class="px-2.5 py-0.5 rounded text-xs font-bold bg-blue-600 text-white transition">中</button>
+          <button onclick="setFontSize('large')" id="btn-font-large" class="px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition">大</button>
+        </div>
+      </div>
+
+      <!-- 風格選擇標籤 -->
+      <div class="flex items-center space-x-2">
+        <span class="font-bold text-slate-300 flex items-center space-x-1">
+          <span>🎨</span>
+          <span>風格：</span>
+        </span>
+        <div class="inline-flex rounded-lg bg-slate-900 border border-slate-700 p-0.5">
+          <button onclick="setThemeStyle('light')" id="btn-theme-light" class="px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition">淺色</button>
+          <button onclick="setThemeStyle('dark')" id="btn-theme-dark" class="px-2.5 py-0.5 rounded text-xs font-bold bg-blue-600 text-white transition">深色</button>
+          <button onclick="setThemeStyle('softblue')" id="btn-theme-softblue" class="px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition">淡藍</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 標記與學校資訊 -->
+    <div class="text-[11px] text-slate-400 hidden sm:flex items-center space-x-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span>4 位觀課教師手寫紀錄 100% 電子化與向度分析</span>
+    </div>
+  </div>
 
   <!-- 頂部導航列 -->
-  <header class="bg-slate-950/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50 px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+  <header class="bg-slate-950/90 backdrop-blur border-b border-slate-800 sticky top-[41px] z-50 px-6 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
     <div class="flex items-center space-x-3">
       <span class="p-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
@@ -51,7 +205,7 @@
           <span class="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-md font-semibold">公開觀議課專案</span>
           <span class="text-xs text-slate-400">115 年 11 月 9 日</span>
         </div>
-        <h1 class="text-lg md:text-xl font-bold text-white tracking-tight">
+        <h1 class="text-base md:text-lg font-bold text-white tracking-tight">
           鳳鳴國中 科技領域（資訊科技）公開觀課統整分析與議課成果儀表板
         </h1>
       </div>
@@ -59,8 +213,10 @@
 
     <!-- 右側功能按鈕 -->
     <div class="flex items-center space-x-2.5 no-print">
-      <a href="教案網頁式簡報.html" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-medium flex items-center space-x-1.5 transition">
-        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+      <a href="index.html" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-medium flex items-center space-x-1.5 transition">
+        <span>🏠 返回成果首頁</span>
+      </a>
+      <a href="教案網頁式簡報.html" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow transition">
         <span>🖥️ 查看教案簡報</span>
       </a>
       <button onclick="window.print()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow-md shadow-emerald-600/20 transition">
@@ -154,7 +310,7 @@
     <!-- 2. 六大規準向度雷達分析與指標達成度 (SVG 視覺化圖表) -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
       
-      <!-- 左側：規準向度雷達圖 (純 SVG 無外部依賴) -->
+      <!-- 左側：規準向度雷達圖 -->
       <div class="lg:col-span-6 bg-slate-800/90 rounded-3xl p-6 border border-slate-700 shadow-xl flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-700">
@@ -169,24 +325,22 @@
           <div class="relative flex items-center justify-center py-4">
             <svg viewBox="0 0 400 360" class="w-full max-w-md h-auto">
               <!-- 背景網格同心六邊形 -->
-              <polygon points="200,40 330,115 330,265 200,340 70,265 70,115" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="3,3"/>
-              <polygon points="200,80 297,135 297,245 200,300 103,245 103,135" fill="none" stroke="#334155" stroke-width="1"/>
-              <polygon points="200,120 265,158 265,222 200,260 135,222 135,158" fill="none" stroke="#334155" stroke-width="1"/>
-              <polygon points="200,160 232,178 232,202 200,220 168,202 168,178" fill="none" stroke="#334155" stroke-width="0.5"/>
+              <polygon points="200,40 330,115 330,265 200,340 70,265 70,115" fill="none" stroke="#475569" stroke-width="1.5" stroke-dasharray="3,3"/>
+              <polygon points="200,80 297,135 297,245 200,300 103,245 103,135" fill="none" stroke="#475569" stroke-width="1"/>
+              <polygon points="200,120 265,158 265,222 200,260 135,222 135,158" fill="none" stroke="#475569" stroke-width="1"/>
 
               <!-- 軸線 -->
-              <line x1="200" y1="190" x2="200" y2="40" stroke="#475569" stroke-width="1"/>
-              <line x1="200" y1="190" x2="330" y2="115" stroke="#475569" stroke-width="1"/>
-              <line x1="200" y1="190" x2="330" y2="265" stroke="#475569" stroke-width="1"/>
-              <line x1="200" y1="190" x2="200" y2="340" stroke="#475569" stroke-width="1"/>
-              <line x1="200" y1="190" x2="70" y2="265" stroke="#475569" stroke-width="1"/>
-              <line x1="200" y1="190" x2="70" y2="115" stroke="#475569" stroke-width="1"/>
+              <line x1="200" y1="190" x2="200" y2="40" stroke="#64748b" stroke-width="1"/>
+              <line x1="200" y1="190" x2="330" y2="115" stroke="#64748b" stroke-width="1"/>
+              <line x1="200" y1="190" x2="330" y2="265" stroke="#64748b" stroke-width="1"/>
+              <line x1="200" y1="190" x2="200" y2="340" stroke="#64748b" stroke-width="1"/>
+              <line x1="200" y1="190" x2="70" y2="265" stroke="#64748b" stroke-width="1"/>
+              <line x1="200" y1="190" x2="70" y2="115" stroke="#64748b" stroke-width="1"/>
 
-              <!-- 實際數據多邊形 (得分率約 96% - 99%) -->
+              <!-- 實際數據多邊形 -->
               <polygon points="200,45 325,120 323,260 200,335 75,260 74,120" 
                        fill="rgba(16, 185, 129, 0.25)" stroke="#10b981" stroke-width="3"/>
 
-              <!-- 數據節點圓點 -->
               <circle cx="200" cy="45" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
               <circle cx="325" cy="120" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
               <circle cx="323" cy="260" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
@@ -194,24 +348,23 @@
               <circle cx="75" cy="260" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
               <circle cx="74" cy="120" r="4.5" fill="#34d399" stroke="#fff" stroke-width="1.5"/>
 
-              <!-- 軸向標籤文字 -->
-              <text x="200" y="24" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="bold">A-1 課綱與教材規劃 (98%)</text>
-              <text x="345" y="115" text-anchor="start" fill="#93c5fd" font-size="12" font-weight="bold">A-2 教學與動機 (96%)</text>
-              <text x="345" y="270" text-anchor="start" fill="#93c5fd" font-size="12" font-weight="bold">A-3 策略與引導 (95%)</text>
-              <text x="200" y="358" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="bold">A-4 多元評量 (97%)</text>
-              <text x="55" y="270" text-anchor="end" fill="#c084fc" font-size="12" font-weight="bold">B-1 班級經營 (98%)</text>
-              <text x="55" y="115" text-anchor="end" fill="#c084fc" font-size="12" font-weight="bold">B-2 環境與設施 (99%)</text>
+              <text x="200" y="24" text-anchor="middle" fill="#0284c7" font-size="12" font-weight="bold">A-1 課綱與教材規劃 (98%)</text>
+              <text x="345" y="115" text-anchor="start" fill="#0284c7" font-size="12" font-weight="bold">A-2 教學與動機 (96%)</text>
+              <text x="345" y="270" text-anchor="start" fill="#0284c7" font-size="12" font-weight="bold">A-3 策略與引導 (95%)</text>
+              <text x="200" y="358" text-anchor="middle" fill="#0284c7" font-size="12" font-weight="bold">A-4 多元評量 (97%)</text>
+              <text x="55" y="270" text-anchor="end" fill="#9333ea" font-size="12" font-weight="bold">B-1 班級經營 (98%)</text>
+              <text x="55" y="115" text-anchor="end" fill="#9333ea" font-size="12" font-weight="bold">B-2 環境與設施 (99%)</text>
             </svg>
           </div>
         </div>
 
         <div class="bg-slate-900/80 rounded-xl p-3 border border-slate-700/80 text-xs text-slate-300 flex items-center justify-between">
-          <span>綜合評價層級：<strong class="text-emerald-400">優等 (Excellent)</strong></span>
+          <span>綜合評價層級：<strong class="text-emerald-400 font-bold">優等 (Excellent)</strong></span>
           <span class="text-slate-400">無任何待改善指標</span>
         </div>
       </div>
 
-      <!-- 右側：六大指標細部達成率與評析柱狀圖 -->
+      <!-- 右側：六大指標細部達成率柱狀圖 -->
       <div class="lg:col-span-6 bg-slate-800/90 rounded-3xl p-6 border border-slate-700 shadow-xl flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-700">
@@ -220,7 +373,6 @@
           </div>
 
           <div class="space-y-4">
-            <!-- A-1 -->
             <div>
               <div class="flex justify-between text-xs mb-1">
                 <span class="font-bold text-slate-200">A-1 參照課綱研擬計畫與選編適切教材</span>
@@ -232,7 +384,6 @@
               <span class="text-[11px] text-slate-400 mt-0.5 block">亮點：引進鴻海科技教育基金會資源，深入淺出轉換為七年級適用教案。</span>
             </div>
 
-            <!-- A-2 -->
             <div>
               <div class="flex justify-between text-xs mb-1">
                 <span class="font-bold text-slate-200">A-2 掌握教材內容、引發動機與提供練習</span>
@@ -244,7 +395,6 @@
               <span class="text-[11px] text-slate-400 mt-0.5 block">亮點：以自走車引導學習動機，做中學實車檢測運轉迅速。</span>
             </div>
 
-            <!-- A-3 -->
             <div>
               <div class="flex justify-between text-xs mb-1">
                 <span class="font-bold text-slate-200">A-3 適切教學方法、融入學習策略與教室走動</span>
@@ -256,7 +406,6 @@
               <span class="text-[11px] text-slate-400 mt-0.5 block">亮點：清楚傳達口令步驟、黑白感測反差對比清晰、全場巡視個別指導。</span>
             </div>
 
-            <!-- A-4 -->
             <div>
               <div class="flex justify-between text-xs mb-1">
                 <span class="font-bold text-slate-200">A-4 多元評量方式、分析結果並調整教學</span>
@@ -268,7 +417,6 @@
               <span class="text-[11px] text-slate-400 mt-0.5 block">亮點：實作操作表現結合學習單評量，因應環境光害拉上窗簾調整教學。</span>
             </div>
 
-            <!-- B-1 & B-2 -->
             <div>
               <div class="flex justify-between text-xs mb-1">
                 <span class="font-bold text-slate-200">B-1 & B-2 班級常規、回應行為與教學環境設施</span>
@@ -284,7 +432,7 @@
       </div>
     </section>
 
-    <!-- 3. 課堂四大關鍵亮點深度剖析 (Four Distinct Highlights) -->
+    <!-- 3. 課堂四大關鍵亮點深度剖析 -->
     <section>
       <div class="flex items-center space-x-2 mb-6">
         <span class="text-xl">🌟</span>
@@ -293,7 +441,6 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        <!-- 亮點 1: 教學機智抗光害 -->
         <div class="bg-slate-800/90 rounded-2xl p-6 border-l-4 border-amber-500 border border-slate-700 shadow-lg">
           <div class="flex items-center justify-between mb-3">
             <span class="badge-indicator bg-amber-500/20 text-amber-300 border border-amber-500/30">
@@ -306,11 +453,10 @@
             「教室光線也會影響機器人的感測器，老師將窗簾拉上。」
           </div>
           <p class="text-xs text-slate-300 leading-relaxed">
-            紅外線感測器對自然光與陽光中的紅外頻段極度敏感。在開課現場發現車輛讀值飄移出軌時，吳老師未慌亂指責程式錯誤，而是迅速診斷為環境光源干擾並果斷拉上窗簾，展現高度深厚的硬體除錯經驗與專業教學機智。
+            紅外線感測器對自然光中的紅外頻段敏感。發現車輛讀值飄移出軌時，吳老師果斷拉上窗簾阻絕光害，展現精準診斷與專業教學機智。
           </p>
         </div>
 
-        <!-- 亮點 2: 耐心引導除錯 -->
         <div class="bg-slate-800/90 rounded-2xl p-6 border-l-4 border-blue-500 border border-slate-700 shadow-lg">
           <div class="flex items-center justify-between mb-3">
             <span class="badge-indicator bg-blue-500/20 text-blue-300 border border-blue-500/30">
@@ -323,11 +469,10 @@
             「學生的機器人不會動時，老師引導檢查馬達。」
           </div>
           <p class="text-xs text-slate-300 leading-relaxed">
-            當學生遇到「燒錄後車輛完全不動」的挫折情境，教師採取啟發式提問引導學生檢查硬體端：馬達接線端子是否插反、電源是否開啟、齒輪箱是否卡阻。讓學生體會機器人教育不僅是軟體邏輯，更包含軟硬體整合排錯（Debugging）。
+            學生遇到不動挫折時，採取啟發式引導學生步驟化檢查硬體接線端子與電源開關，建立工程除錯素養。
           </p>
         </div>
 
-        <!-- 亮點 3: 鴻海頂尖資源引進 -->
         <div class="bg-slate-800/90 rounded-2xl p-6 border-l-4 border-emerald-500 border border-slate-700 shadow-lg">
           <div class="flex items-center justify-between mb-3">
             <span class="badge-indicator bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
@@ -340,11 +485,10 @@
             「按照課綱，並引進鴻海科技的資源」 / 「搭配鴻海基金會教材和老師調整」
           </div>
           <p class="text-xs text-slate-300 leading-relaxed">
-            積極向外爭取外部頂尖科技資源，將前瞻科技教育模組本土化剪裁。以 10 通道感測器搭配 Matrix Block，教材深淺適配七年級學生認知水平，具體落實學校「科技教育生活化」的辦學願景。
+            積極向外爭取外部頂尖科技資源，將前瞻科技教育模組本土化剪裁，具體落實學校「科技教育生活化」願景。
           </p>
         </div>
 
-        <!-- 亮點 4: 空間動線與一人一機 -->
         <div class="bg-slate-800/90 rounded-2xl p-6 border-l-4 border-purple-500 border border-slate-700 shadow-lg">
           <div class="flex items-center justify-between mb-3">
             <span class="badge-indicator bg-purple-500/20 text-purple-300 border border-purple-500/30">
@@ -357,14 +501,14 @@
             「空間寬敞、有電腦區、及檢測區」 / 「每位S一台機器，S表現良好，認真學習」
           </div>
           <p class="text-xs text-slate-300 leading-relaxed">
-            硬體資源充沛，完全達成「生生有車（一人一機）」，避免多人共用一台導致邊緣化；更將場地巧妙劃分「電腦編寫區」與「黑色膠帶實跑測試區」，學生寫完程式迅速移動至跑道驗證，動線井然有序。
+            徹底達成「生生有車」，避免多人共用邊緣化；場地劃分「電腦編寫區」與「黑色膠帶測試區」，動線井然有序。
           </p>
         </div>
 
       </div>
     </section>
 
-    <!-- 4. 四位觀課教師完整原始紀錄對照矩陣 (Interactive Observer Matrix) -->
+    <!-- 4. 四位觀課教師完整原始紀錄對照矩陣 -->
     <section class="bg-slate-800/90 rounded-3xl p-6 md:p-8 border border-slate-700 shadow-xl">
       <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 pb-4 border-b border-slate-700 gap-4">
         <div>
@@ -515,7 +659,7 @@
       </div>
     </section>
 
-    <!-- 5. 議課綜合回饋、SWOT 分析與後續教學精進方案 -->
+    <!-- 5. 議課綜合回饋與精進方案 -->
     <section class="bg-gradient-to-br from-slate-900 to-indigo-950/70 rounded-3xl p-6 md:p-8 border border-slate-700 shadow-xl">
       <div class="mb-6 pb-4 border-b border-slate-700">
         <h2 class="text-xl font-bold text-white">議課綜合會談總結與後續教學精進方案 (Debrief Synthesis)</h2>
@@ -526,91 +670,51 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         
-        <!-- 優勢鞏固 (Strengths) -->
         <div class="bg-slate-900/80 rounded-2xl p-5 border border-emerald-500/30">
           <div class="flex items-center space-x-2 text-emerald-400 mb-3 font-bold text-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
             <span>課堂優勢與成熟亮點 (Strengths)</span>
           </div>
           <ul class="space-y-2 text-xs text-slate-300 leading-relaxed">
-            <li class="flex items-start space-x-1.5">
-              <span class="text-emerald-400">•</span>
-              <span><strong>生生有車實動率高：</strong>一人一機讓每位學生都能完整經歷「寫程式 ➜ 燒錄 ➜ 實地跑 ➜ 修正」的工程循環。</span>
-            </li>
-            <li class="flex items-start space-x-1.5">
-              <span class="text-emerald-400">•</span>
-              <span><strong>軟硬整合排錯素養：</strong>從馬達接線到環境光線排除，引導學生打破「只改程式碼」的單一思維。</span>
-            </li>
-            <li class="flex items-start space-x-1.5">
-              <span class="text-emerald-400">•</span>
-              <span><strong>多元評量兼顧歷程：</strong>實機繞行表現、同儕互助與實作學習單完整銜接。</span>
-            </li>
+            <li class="flex items-start space-x-1.5"><span class="text-emerald-400">•</span><span><strong>生生有車實動率高：</strong>一人一機讓每位學生都能完整經歷工程循環。</span></li>
+            <li class="flex items-start space-x-1.5"><span class="text-emerald-400">•</span><span><strong>軟硬整合排錯素養：</strong>從馬達接線到環境光線排除，引導學生排錯思維。</span></li>
+            <li class="flex items-start space-x-1.5"><span class="text-emerald-400">•</span><span><strong>多元評量兼顧歷程：</strong>實機繞行表現、同儕互助與實作學習單完整銜接。</span></li>
           </ul>
         </div>
 
-        <!-- 潛在挑戰 (Challenges) -->
         <div class="bg-slate-900/80 rounded-2xl p-5 border border-amber-500/30">
           <div class="flex items-center space-x-2 text-amber-400 mb-3 font-bold text-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
             <span>時間與個別差異挑戰 (Challenges)</span>
           </div>
           <ul class="space-y-2 text-xs text-slate-300 leading-relaxed">
-            <li class="flex items-start space-x-1.5">
-              <span class="text-amber-400">•</span>
-              <span><strong>單節45分鐘時間緊湊：</strong>學生在積木拖曳與硬體調校耗時較多，後半段挑戰賽時間稍顯匆促。</span>
-            </li>
-            <li class="flex items-start space-x-1.5">
-              <span class="text-amber-400">•</span>
-              <span><strong>個別學生進度落差：</strong>部分對打字與軟體介面不熟練的學生，需較多個別走動指導時間。</span>
-            </li>
-            <li class="flex items-start space-x-1.5">
-              <span class="text-amber-400">•</span>
-              <span><strong>特殊路況難度提升：</strong>直角彎與十字路口需要多組判斷式巢狀組合，本節課僅能完成二分法基礎線路。</span>
-            </li>
+            <li class="flex items-start space-x-1.5"><span class="text-amber-400">•</span><span><strong>單節45分鐘時間緊湊：</strong>積木拖曳與硬體調校耗時較多。</span></li>
+            <li class="flex items-start space-x-1.5"><span class="text-amber-400">•</span><span><strong>個別學生進度落差：</strong>部分打字與介面不熟練者需個別指導。</span></li>
+            <li class="flex items-start space-x-1.5"><span class="text-amber-400">•</span><span><strong>特殊路況難度提升：</strong>直角彎與十字路口需後續課堂深化。</span></li>
           </ul>
         </div>
 
-        <!-- 精進行動方案 (Action Plan) -->
         <div class="bg-slate-900/80 rounded-2xl p-5 border border-blue-500/30">
           <div class="flex items-center space-x-2 text-blue-400 mb-3 font-bold text-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             <span>後續教學精進方案 (Action Plan)</span>
           </div>
           <ul class="space-y-2 text-xs text-slate-300 leading-relaxed">
-            <li class="flex items-start space-x-1.5">
-              <span class="text-blue-400">•</span>
-              <span><strong>建立「除錯小組長」制度：</strong>讓先完成調校的學生擔任同儕教練，協助周遭同學排查馬達接線。</span>
-            </li>
-            <li class="flex items-start space-x-1.5">
-              <span class="text-blue-400">•</span>
-              <span><strong>建議規劃連堂或延伸單元：</strong>將進階特殊路況（十字路口辨識、直角轉彎）規劃為下階段進階任務。</span>
-            </li>
-            <li class="flex items-start space-x-1.5">
-              <span class="text-blue-400">•</span>
-              <span><strong>增設「環境光源探究」學習單格位：</strong>將「拉窗簾排除光害」轉化為學生專題探究小問題。</span>
-            </li>
+            <li class="flex items-start space-x-1.5"><span class="text-blue-400">•</span><span><strong>建立除錯小組長制度：</strong>同儕教練協助排查馬達接線。</span></li>
+            <li class="flex items-start space-x-1.5"><span class="text-blue-400">•</span><span><strong>規劃延伸連堂單元：</strong>將進階特殊路況作為後續專題。</span></li>
+            <li class="flex items-start space-x-1.5"><span class="text-blue-400">•</span><span><strong>增設光線探究格位：</strong>在學習單將拉窗簾排障轉為專題探究。</span></li>
           </ul>
         </div>
 
       </div>
 
-      <!-- 授課教師自評與總結簽章欄 -->
       <div class="bg-slate-950/90 rounded-2xl p-5 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between text-xs text-slate-400 gap-4">
         <div>
           <span class="text-slate-200 font-bold block mb-1">授課教師教學自我省思：</span>
           <p class="leading-relaxed">
-            「感謝四位同儕教師的精準回饋。本次公開課成功驗證了 10 通道循跡感測器在國中七年級的可行性，學生能從具象的車體行進深刻體會二分法與迴圈控制。後續將進一步微調時間節奏，讓學生有更多反思與分享時間。」
+            「感謝四位同儕教師的精準回饋。本次公開課成功驗證了 10 通道循跡感測器在國中七年級的可行性，學生能從具象的車體行進深刻體會二分法與迴圈控制。」
           </p>
         </div>
         <div class="shrink-0 flex items-center space-x-6 border-t md:border-t-0 md:border-l border-slate-800 pt-3 md:pt-0 md:pl-6">
-          <div>
-            <span class="block text-[11px] text-slate-500">主導教學者簽名</span>
-            <span class="font-bold text-slate-200 text-sm">吳昌年 老師</span>
-          </div>
-          <div>
-            <span class="block text-[11px] text-slate-500">公開授課日期</span>
-            <span class="font-bold text-slate-200 text-sm">115.11.09</span>
-          </div>
+          <div><span class="block text-[11px] text-slate-500">主導教學者</span><span class="font-bold text-slate-200 text-sm">吳昌年 老師</span></div>
+          <div><span class="block text-[11px] text-slate-500">公開授課日期</span><span class="font-bold text-slate-200 text-sm">115.11.09</span></div>
         </div>
       </div>
     </section>
@@ -622,6 +726,49 @@
   </footer>
 
   <script>
+    // ========== 字型大小切換邏輯 ==========
+    function setFontSize(size) {
+      document.documentElement.setAttribute('data-font-size', size);
+      localStorage.setItem('user_font_size', size);
+
+      const buttons = ['small', 'medium', 'large'];
+      buttons.forEach(s => {
+        const btn = document.getElementById(`btn-font-${s}`);
+        if (btn) {
+          if (s === size) {
+            btn.className = "px-2.5 py-0.5 rounded text-xs font-bold bg-blue-600 text-white transition";
+          } else {
+            btn.className = "px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition";
+          }
+        }
+      });
+    }
+
+    // ========== 風格主題切換邏輯 ==========
+    function setThemeStyle(theme) {
+      document.body.className = `theme-${theme} min-h-screen selection:bg-emerald-600 selection:text-white`;
+      localStorage.setItem('user_theme_style', theme);
+
+      const themes = ['light', 'dark', 'softblue'];
+      themes.forEach(t => {
+        const btn = document.getElementById(`btn-theme-${t}`);
+        if (btn) {
+          if (t === theme) {
+            btn.className = "px-2.5 py-0.5 rounded text-xs font-bold bg-blue-600 text-white transition";
+          } else {
+            btn.className = "px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition";
+          }
+        }
+      });
+    }
+
+    const savedFontSize = localStorage.getItem('user_font_size') || 'medium';
+    setFontSize(savedFontSize);
+
+    const savedTheme = localStorage.getItem('user_theme_style') || 'dark';
+    setThemeStyle(savedTheme);
+
+    // ========== 教師切換篩選 ==========
     function filterTeacher(teacherKey) {
       const cards = document.querySelectorAll('.teacher-card');
       const tabs = document.querySelectorAll('.teacher-tab-btn');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" data-font-size="medium">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,28 +7,203 @@
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+    
     body {
       font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
+
+    /* ========== 字型大小定義 ========== */
+    html[data-font-size="small"] {
+      font-size: 14px;
+    }
+    html[data-font-size="medium"] {
+      font-size: 16px;
+    }
+    html[data-font-size="large"] {
+      font-size: 18.5px;
+    }
+
+    /* ========== 風格佈景主題 ========== */
+    /* 1. 預設深色 Dark (科技酷黑) */
+    body.theme-dark {
+      background-color: #020617;
+      color: #f8fafc;
+    }
+
+    /* 2. 淺色 Light (清爽明亮) */
+    body.theme-light {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+    body.theme-light .top-toolbar {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: #e2e8f0 !important;
+    }
+    body.theme-light header {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      border-color: #e2e8f0 !important;
+    }
+    body.theme-light .bg-slate-900,
+    body.theme-light .bg-slate-900\/90,
+    body.theme-light .bg-slate-900\/80,
+    body.theme-light .bg-slate-900\/60,
+    body.theme-light .bg-slate-800,
+    body.theme-light .bg-slate-800\/90,
+    body.theme-light .bg-slate-800\/80 {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      color: #0f172a !important;
+      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+    }
+    body.theme-light .bg-slate-950,
+    body.theme-light .bg-slate-950\/90,
+    body.theme-light .bg-slate-950\/80,
+    body.theme-light .bg-slate-950\/70 {
+      background-color: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    body.theme-light .border-slate-800,
+    body.theme-light .border-slate-700,
+    body.theme-light .border-slate-800\/80 {
+      border-color: #e2e8f0 !important;
+    }
+    body.theme-light .text-white {
+      color: #0f172a !important;
+    }
+    body.theme-light .text-slate-100,
+    body.theme-light .text-slate-200,
+    body.theme-light .text-slate-300 {
+      color: #1e293b !important;
+    }
+    body.theme-light .text-slate-400,
+    body.theme-light .text-slate-500 {
+      color: #475569 !important;
+    }
+    body.theme-light footer {
+      background-color: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+      color: #64748b !important;
+    }
+    body.theme-light .hero-box {
+      background: linear-gradient(135deg, #e2e8f0 0%, #f8fafc 100%) !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    /* 3. 淡藍 Soft Blue (科技舒心水藍) */
+    body.theme-softblue {
+      background-color: #f0f7ff !important;
+      color: #0c4a6e !important;
+    }
+    body.theme-softblue .top-toolbar {
+      background-color: rgba(240, 247, 255, 0.98) !important;
+      border-color: #bae6fd !important;
+    }
+    body.theme-softblue header {
+      background-color: rgba(240, 247, 255, 0.92) !important;
+      border-color: #bae6fd !important;
+    }
+    body.theme-softblue .bg-slate-900,
+    body.theme-softblue .bg-slate-900\/90,
+    body.theme-softblue .bg-slate-900\/80,
+    body.theme-softblue .bg-slate-900\/60,
+    body.theme-softblue .bg-slate-800,
+    body.theme-softblue .bg-slate-800\/90,
+    body.theme-softblue .bg-slate-800\/80 {
+      background-color: #ffffff !important;
+      border-color: #bae6fd !important;
+      color: #0c4a6e !important;
+      box-shadow: 0 4px 14px rgba(186, 230, 253, 0.35) !important;
+    }
+    body.theme-softblue .bg-slate-950,
+    body.theme-softblue .bg-slate-950\/90,
+    body.theme-softblue .bg-slate-950\/80,
+    body.theme-softblue .bg-slate-950\/70 {
+      background-color: #e0f2fe !important;
+      border-color: #bae6fd !important;
+      color: #0369a1 !important;
+    }
+    body.theme-softblue .border-slate-800,
+    body.theme-softblue .border-slate-700,
+    body.theme-softblue .border-slate-800\/80 {
+      border-color: #bae6fd !important;
+    }
+    body.theme-softblue .text-white {
+      color: #0c4a6e !important;
+    }
+    body.theme-softblue .text-slate-100,
+    body.theme-softblue .text-slate-200,
+    body.theme-softblue .text-slate-300 {
+      color: #0369a1 !important;
+    }
+    body.theme-softblue .text-slate-400,
+    body.theme-softblue .text-slate-500 {
+      color: #0284c7 !important;
+    }
+    body.theme-softblue footer {
+      background-color: #e0f2fe !important;
+      border-color: #bae6fd !important;
+      color: #0369a1 !important;
+    }
+    body.theme-softblue .hero-box {
+      background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 50%, #f0f7ff 100%) !important;
+      border-color: #7dd3fc !important;
+    }
+
     .tab-btn.active {
-      background-color: #2563eb;
-      color: #ffffff;
-      border-color: #3b82f6;
-    }
-    .glass-box {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      background-color: #2563eb !important;
+      color: #ffffff !important;
+      border-color: #3b82f6 !important;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white">
+<body class="theme-dark bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white">
+
+  <!-- ★ 最上方標籤控制列：字型 (大/中/小) 與 風格 (淺色/深色/淡藍) ★ -->
+  <div class="top-toolbar bg-slate-950/95 border-b border-slate-800 px-6 py-2.5 text-xs flex flex-wrap items-center justify-between gap-3 sticky top-0 z-[60] backdrop-blur shadow-sm">
+    <div class="flex flex-wrap items-center gap-4 sm:gap-6">
+      
+      <!-- 字型選擇標籤 -->
+      <div class="flex items-center space-x-2">
+        <span class="font-bold text-slate-300 flex items-center space-x-1">
+          <span>🔤</span>
+          <span>字型：</span>
+        </span>
+        <div class="inline-flex rounded-lg bg-slate-900 border border-slate-700 p-0.5" id="fontSizeGroup">
+          <button onclick="setFontSize('small')" id="btn-font-small" class="px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition">小</button>
+          <button onclick="setFontSize('medium')" id="btn-font-medium" class="px-2.5 py-0.5 rounded text-xs font-bold bg-blue-600 text-white transition">中</button>
+          <button onclick="setFontSize('large')" id="btn-font-large" class="px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition">大</button>
+        </div>
+      </div>
+
+      <!-- 風格選擇標籤 -->
+      <div class="flex items-center space-x-2">
+        <span class="font-bold text-slate-300 flex items-center space-x-1">
+          <span>🎨</span>
+          <span>風格：</span>
+        </span>
+        <div class="inline-flex rounded-lg bg-slate-900 border border-slate-700 p-0.5" id="themeGroup">
+          <button onclick="setThemeStyle('light')" id="btn-theme-light" class="px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition">淺色</button>
+          <button onclick="setThemeStyle('dark')" id="btn-theme-dark" class="px-2.5 py-0.5 rounded text-xs font-bold bg-blue-600 text-white transition">深色</button>
+          <button onclick="setThemeStyle('softblue')" id="btn-theme-softblue" class="px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition">淡藍</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 標記與學校資訊 -->
+    <div class="text-[11px] text-slate-400 hidden sm:flex items-center space-x-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span>南投縣立鳳鳴國中 115 學年度 公開授課與觀議課專區</span>
+    </div>
+  </div>
 
   <!-- 頂部 Header -->
-  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-4">
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-[41px] z-50 px-6 py-3.5">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div class="flex items-center space-x-3.5">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-blue-500/30">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-blue-500/30">
           FM
         </div>
         <div>
@@ -36,7 +211,7 @@
             <span class="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-md font-semibold border border-blue-500/30">115學年度公開授課</span>
             <span class="text-xs text-slate-400">南投縣立鳳鳴國中 科技領域 / 資訊科技</span>
           </div>
-          <h1 class="text-lg md:text-xl font-bold text-white tracking-tight">
+          <h1 class="text-base md:text-lg font-bold text-white tracking-tight">
             Matrix 機器人十線循跡感測器程式設計實戰 數位成果整合專區
           </h1>
         </div>
@@ -44,13 +219,13 @@
       
       <!-- 快速跳轉快捷鈕 -->
       <div class="flex items-center flex-wrap gap-2 text-xs">
-        <a href="教案網頁式簡報.html" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold shadow-md shadow-blue-600/20 transition flex items-center space-x-1">
+        <a href="教案網頁式簡報.html" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold shadow-md shadow-blue-600/20 transition flex items-center space-x-1">
           <span>🖥️ 互動教案簡報</span>
         </a>
-        <a href="觀議課統整分析儀表板.html" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold shadow-md shadow-emerald-600/20 transition flex items-center space-x-1">
+        <a href="觀議課統整分析儀表板.html" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold shadow-md shadow-emerald-600/20 transition flex items-center space-x-1">
           <span>📊 觀議課分析儀表板</span>
         </a>
-        <a href="https://padlet.com/qianyikeji1/1151109-s0258t0m3dds4ewmigjc" target="_blank" rel="noopener" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl font-medium transition flex items-center space-x-1">
+        <a href="https://padlet.com/qianyikeji1/1151109-s0258t0m3dds4ewmigjc" target="_blank" rel="noopener" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl font-medium transition flex items-center space-x-1">
           <span>📌 原始 Padlet 看板</span>
           <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
         </a>
@@ -59,10 +234,10 @@
   </header>
 
   <!-- 主內容區 -->
-  <main class="max-w-7xl mx-auto w-full p-4 md:p-8 flex-1 space-y-10">
+  <main class="max-w-7xl mx-auto w-full p-4 md:p-8 flex-1 space-y-8">
 
     <!-- 1. 英雄橫幅 (Hero Banner) 與活動資訊 -->
-    <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 p-6 md:p-10 shadow-2xl">
+    <section class="hero-box relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 p-6 md:p-10 shadow-2xl">
       <div class="absolute -right-20 -top-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
       <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         
@@ -536,6 +711,50 @@
   </footer>
 
   <script>
+    // ========== 字型大小切換邏輯 ==========
+    function setFontSize(size) {
+      document.documentElement.setAttribute('data-font-size', size);
+      localStorage.setItem('user_font_size', size);
+
+      const buttons = ['small', 'medium', 'large'];
+      buttons.forEach(s => {
+        const btn = document.getElementById(`btn-font-${s}`);
+        if (btn) {
+          if (s === size) {
+            btn.className = "px-2.5 py-0.5 rounded text-xs font-bold bg-blue-600 text-white transition";
+          } else {
+            btn.className = "px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition";
+          }
+        }
+      });
+    }
+
+    // ========== 風格主題切換邏輯 ==========
+    function setThemeStyle(theme) {
+      document.body.className = `theme-${theme} min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white`;
+      localStorage.setItem('user_theme_style', theme);
+
+      const themes = ['light', 'dark', 'softblue'];
+      themes.forEach(t => {
+        const btn = document.getElementById(`btn-theme-${t}`);
+        if (btn) {
+          if (t === theme) {
+            btn.className = "px-2.5 py-0.5 rounded text-xs font-bold bg-blue-600 text-white transition";
+          } else {
+            btn.className = "px-2.5 py-0.5 rounded text-xs text-slate-400 hover:text-white transition";
+          }
+        }
+      });
+    }
+
+    // 載入預設或儲存之設定
+    const savedFontSize = localStorage.getItem('user_font_size') || 'medium';
+    setFontSize(savedFontSize);
+
+    const savedTheme = localStorage.getItem('user_theme_style') || 'dark';
+    setThemeStyle(savedTheme);
+
+    // ========== Tab 頁籤切換 ==========
     function switchTab(tabKey) {
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
